@@ -1,8 +1,12 @@
 export interface TablePosition {
+  /** X position as percentage (0-100) for image overlay, or pixels for SVG */
   x: number;
+  /** Y position as percentage (0-100) for image overlay, or pixels for SVG */
   y: number;
-  width: number;
-  height: number;
+  /** Width in pixels (only used for SVG floor plans) */
+  width?: number;
+  /** Height in pixels (only used for SVG floor plans) */
+  height?: number;
 }
 
 export interface Table {
@@ -16,8 +20,12 @@ export interface Table {
 }
 
 export interface FloorPlan {
+  /** Width in pixels (for SVG) */
   width: number;
+  /** Height in pixels (for SVG) */
   height: number;
+  /** Optional image URL for image-based floor plans */
+  imageUrl?: string;
 }
 
 export interface Location {
@@ -25,6 +33,8 @@ export interface Location {
   name: string;
   description?: string;
   floorPlan: FloorPlan;
+  /** Floor plan image filename (stored in /locations/{id}/) */
+  floorPlanImage?: string;
   tables: Table[];
   updatedAt?: string;
 }

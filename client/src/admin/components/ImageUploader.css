@@ -1,0 +1,92 @@
+.image-uploader {
+  border: 3px dashed #cbd5e0;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f7fafc;
+}
+
+.image-uploader:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.image-uploader.drag-over {
+  border-color: #48bb78;
+  background: #f0fff4;
+  transform: scale(1.01);
+}
+
+.image-uploader.has-preview {
+  padding: 0;
+  border-style: solid;
+  border-color: #e2e8f0;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.upload-placeholder h3 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+}
+
+.upload-placeholder p {
+  margin: 0;
+  color: #718096;
+}
+
+.formats {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  margin-top: 8px;
+}
+
+.preview-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-image {
+  display: block;
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  background: #edf2f7;
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.preview-container:hover .preview-overlay {
+  opacity: 1;
+}
+
+.preview-overlay span {
+  color: white;
+  font-weight: 600;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}

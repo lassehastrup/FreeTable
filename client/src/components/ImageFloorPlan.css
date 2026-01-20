@@ -1,0 +1,212 @@
+.image-floor-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.floor-plan-wrapper {
+  position: relative;
+  background: #f7fafc;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.floor-plan-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+/* Table Markers */
+.table-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.marker-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.table-marker.available .marker-badge {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+}
+
+.table-marker.occupied .marker-badge {
+  background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+}
+
+.table-marker.unknown .marker-badge {
+  background: linear-gradient(135deg, #f6e05e 0%, #d69e2e 100%);
+  color: #744210;
+}
+
+.table-marker:hover .marker-badge,
+.table-marker.hovered .marker-badge {
+  transform: scale(1.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.table-marker.available:hover .marker-badge {
+  box-shadow: 0 0 0 4px rgba(72, 187, 120, 0.3), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.table-marker.occupied:hover .marker-badge {
+  box-shadow: 0 0 0 4px rgba(252, 129, 129, 0.3), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Tooltip */
+.marker-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 180px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.marker-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: white;
+}
+
+.table-marker:hover .marker-tooltip,
+.table-marker.hovered .marker-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tooltip-id {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.tooltip-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.tooltip-status.available {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.tooltip-status.occupied {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.tooltip-status.unknown {
+  background: #fefcbf;
+  color: #744210;
+}
+
+.tooltip-user {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 4px;
+}
+
+.tooltip-reason {
+  font-size: 0.85rem;
+  color: #48bb78;
+  font-style: italic;
+}
+
+/* Pulse animation for available tables */
+.table-marker.available .marker-badge::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(72, 187, 120, 0.4);
+  animation: pulse-ring 2s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Legend */
+.floor-plan-legend {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.legend-dot.available {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+}
+
+.legend-dot.occupied {
+  background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+}
+
+.legend-dot.unknown {
+  background: linear-gradient(135deg, #f6e05e 0%, #d69e2e 100%);
+}

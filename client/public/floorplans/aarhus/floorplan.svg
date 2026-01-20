@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" style="background:#f8f9fa">
+  <!-- Office outline -->
+  <rect x="20" y="20" width="760" height="460" fill="none" stroke="#dee2e6" stroke-width="3" rx="8"/>
+  
+  <!-- Room dividers -->
+  <line x1="300" y1="20" x2="300" y2="200" stroke="#dee2e6" stroke-width="2"/>
+  <line x1="500" y1="20" x2="500" y2="200" stroke="#dee2e6" stroke-width="2"/>
+  <line x1="20" y1="280" x2="780" y2="280" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Meeting room -->
+  <rect x="600" y="300" width="160" height="160" fill="#e9ecef" stroke="#dee2e6" stroke-width="2" rx="4"/>
+  <text x="680" y="390" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">Meeting Room</text>
+  
+  <!-- Kitchen area -->
+  <rect x="40" y="300" width="120" height="160" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="4"/>
+  <text x="100" y="390" text-anchor="middle" font-family="Arial" font-size="14" fill="#856404">Kitchen</text>
+  
+  <!-- Desk pods (visual reference - tables will be overlaid) -->
+  <rect x="60" y="60" width="180" height="100" fill="#e7f5ff" stroke="#74c0fc" stroke-width="1" rx="4" opacity="0.5"/>
+  <rect x="320" y="60" width="160" height="100" fill="#e7f5ff" stroke="#74c0fc" stroke-width="1" rx="4" opacity="0.5"/>
+  <rect x="520" y="60" width="240" height="100" fill="#e7f5ff" stroke="#74c0fc" stroke-width="1" rx="4" opacity="0.5"/>
+  
+  <rect x="200" y="320" width="360" height="120" fill="#e7f5ff" stroke="#74c0fc" stroke-width="1" rx="4" opacity="0.5"/>
+  
+  <!-- Labels -->
+  <text x="150" y="45" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">Zone A</text>
+  <text x="400" y="45" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">Zone B</text>
+  <text x="640" y="45" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">Zone C</text>
+  <text x="380" y="305" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">Open Area</text>
+  
+  <!-- Window indicators -->
+  <line x1="20" y1="100" x2="20" y2="180" stroke="#87CEEB" stroke-width="6"/>
+  <line x1="780" y1="100" x2="780" y2="180" stroke="#87CEEB" stroke-width="6"/>
+  <line x1="780" y1="320" x2="780" y2="400" stroke="#87CEEB" stroke-width="6"/>
+</svg>

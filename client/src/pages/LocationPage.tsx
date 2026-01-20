@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { fetchLocation } from '../services/api';
 import { Location, Table } from '../types';
 import { FloorPlanView } from '../components/FloorPlanView';
+import { ImageFloorPlan } from '../components/ImageFloorPlan';
 import { TableCard } from '../components/TableCard';
 import './LocationPage.css';
 
@@ -68,6 +69,12 @@ export const LocationPage: React.FC = () => {
   }
 
   const availableCount = location.tables.filter(t => t.isAvailable).length;
+  
+  // Determine if we have an image-based floor plan
+  const hasImageFloorPlan = location.floorPlanImage || location.floorPlan?.imageUrl;
+  const floorPlanImageUrl = location.floorPlanImage 
+    ? `/floorplans/${location.id}/${location.floorPlanImage}`
+    : location.floorPlan?.imageUrl;
 
   return (
     <div className="location-page">
@@ -99,7 +106,15 @@ export const LocationPage: React.FC = () => {
 
       <main className="location-content">
         {viewMode === 'floor' ? (
-          <FloorPlanView location={location} onTableClick={handleTableClick} />
+          hasImageFloorPlan && floorPlanImageUrl ? (
+            <ImageFloorPlan 
+              floorPlanImageUrl={floorPlanImageUrl}
+              tables={location.tables}
+              onTableClick={handleTableClick}
+            />
+          ) : (
+            <FloorPlanView location={location} onTableClick={handleTableClick} />
+          )
         ) : (
           <div className="tables-grid">
             {location.tables.map(table => (
