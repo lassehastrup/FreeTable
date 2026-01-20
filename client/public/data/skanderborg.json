@@ -1,0 +1,64 @@
+{
+  "id": "skanderborg",
+  "name": "Skanderborg Office",
+  "description": "Branch office in Skanderborg",
+  "floorPlanImage": "floorplan.svg",
+  "floorPlan": { "width": 600, "height": 400 },
+  "tables": [
+    {
+      "id": "S1",
+      "name": "Area 1 - Desk 1",
+      "assignedUser": "user9@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 15, "y": 22 }
+    },
+    {
+      "id": "S2",
+      "name": "Area 1 - Desk 2",
+      "assignedUser": "user10@yourdomain.com",
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Working from home",
+      "position": { "x": 30, "y": 22 }
+    },
+    {
+      "id": "S3",
+      "name": "Area 2 - Desk 1",
+      "assignedUser": null,
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Unassigned table",
+      "position": { "x": 55, "y": 22 }
+    },
+    {
+      "id": "S4",
+      "name": "Area 2 - Desk 2",
+      "assignedUser": "user11@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 75, "y": 22 }
+    },
+    {
+      "id": "S5",
+      "name": "Open Space - Desk 1",
+      "assignedUser": "user12@yourdomain.com",
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Holiday",
+      "position": { "x": 20, "y": 70 }
+    },
+    {
+      "id": "S6",
+      "name": "Open Space - Desk 2",
+      "assignedUser": "user13@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 40, "y": 70 }
+    }
+  ],
+  "updatedAt": "2026-01-20T12:00:00.000Z"
+}
