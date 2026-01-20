@@ -1,0 +1,102 @@
+.location-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.location-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.location-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.location-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.location-description {
+  font-size: 0.9rem;
+  color: #718096;
+  margin: 0;
+}
+
+.location-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.availability-ring {
+  width: 70px;
+  height: 70px;
+}
+
+.circular-chart {
+  display: block;
+  max-width: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke: #48bb78;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.percentage {
+  fill: #2d3748;
+  font-size: 0.5rem;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.stats-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.available-count {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.stats-label {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.last-updated {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin: 0;
+  text-align: right;
+}

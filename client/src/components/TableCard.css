@@ -1,0 +1,95 @@
+.table-card {
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: white;
+  border: 2px solid transparent;
+}
+
+.table-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.table-card:focus {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+.table-card.available {
+  border-color: #28a745;
+  background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+}
+
+.table-card.occupied {
+  border-color: #dc3545;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+}
+
+.table-card.unknown {
+  border-color: #ffc107;
+  background: linear-gradient(135deg, #fffff0 0%, #fefcbf 100%);
+}
+
+.table-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.table-id {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.available {
+  background: #28a745;
+  color: white;
+}
+
+.status-badge.occupied {
+  background: #dc3545;
+  color: white;
+}
+
+.status-badge.unknown {
+  background: #ffc107;
+  color: #212529;
+}
+
+.table-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.table-name {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+.assigned-user {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+}
+
+.availability-reason {
+  font-size: 0.8rem;
+  color: #28a745;
+  font-style: italic;
+  margin: 4px 0 0 0;
+}

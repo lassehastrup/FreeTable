@@ -1,0 +1,47 @@
+{
+  "id": "aarhus",
+  "name": "Aarhus Office",
+  "description": "Main office in Aarhus",
+  "floorPlan": {
+    "width": 800,
+    "height": 600
+  },
+  "tables": [
+    {
+      "id": "A1",
+      "name": "Table A1",
+      "assignedUser": "user1@yourdomain.com",
+      "position": { "x": 50, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "A2",
+      "name": "Table A2",
+      "assignedUser": "user2@yourdomain.com",
+      "position": { "x": 150, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "A3",
+      "name": "Table A3",
+      "assignedUser": "user3@yourdomain.com",
+      "position": { "x": 250, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B1",
+      "name": "Table B1",
+      "assignedUser": "user4@yourdomain.com",
+      "position": { "x": 50, "y": 150, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B2",
+      "name": "Table B2",
+      "assignedUser": null,
+      "position": { "x": 150, "y": 150, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B3",
+      "name": "Table B3",
+      "assignedUser": "user5@yourdomain.com",
+      "position": { "x": 250, "y": 150, "width": 80, "height": 60 }
+    }
+  ]
+}

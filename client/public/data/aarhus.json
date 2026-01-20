@@ -1,0 +1,63 @@
+{
+  "id": "aarhus",
+  "name": "Aarhus Office",
+  "description": "Main office in Aarhus",
+  "floorPlan": { "width": 400, "height": 250 },
+  "tables": [
+    {
+      "id": "A1",
+      "name": "Table A1",
+      "assignedUser": "user1@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 50, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "A2",
+      "name": "Table A2",
+      "assignedUser": "user2@yourdomain.com",
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Vacation",
+      "position": { "x": 150, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "A3",
+      "name": "Table A3",
+      "assignedUser": "user3@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 250, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B1",
+      "name": "Table B1",
+      "assignedUser": "user4@yourdomain.com",
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Out of Office",
+      "position": { "x": 50, "y": 150, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B2",
+      "name": "Table B2",
+      "assignedUser": null,
+      "status": "available",
+      "isAvailable": true,
+      "reason": "Unassigned table",
+      "position": { "x": 150, "y": 150, "width": 80, "height": 60 }
+    },
+    {
+      "id": "B3",
+      "name": "Table B3",
+      "assignedUser": "user5@yourdomain.com",
+      "status": "occupied",
+      "isAvailable": false,
+      "reason": null,
+      "position": { "x": 250, "y": 150, "width": 80, "height": 60 }
+    }
+  ],
+  "updatedAt": "2026-01-20T12:00:00.000Z"
+}

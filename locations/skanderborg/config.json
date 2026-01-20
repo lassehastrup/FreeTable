@@ -1,0 +1,35 @@
+{
+  "id": "skanderborg",
+  "name": "Skanderborg Office",
+  "description": "Branch office in Skanderborg",
+  "floorPlan": {
+    "width": 600,
+    "height": 400
+  },
+  "tables": [
+    {
+      "id": "S1",
+      "name": "Table S1",
+      "assignedUser": "user6@yourdomain.com",
+      "position": { "x": 50, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "S2",
+      "name": "Table S2",
+      "assignedUser": "user7@yourdomain.com",
+      "position": { "x": 150, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "S3",
+      "name": "Table S3",
+      "assignedUser": null,
+      "position": { "x": 250, "y": 50, "width": 80, "height": 60 }
+    },
+    {
+      "id": "S4",
+      "name": "Table S4",
+      "assignedUser": "user8@yourdomain.com",
+      "position": { "x": 50, "y": 150, "width": 80, "height": 60 }
+    }
+  ]
+}
