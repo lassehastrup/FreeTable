@@ -13,13 +13,28 @@ export interface TableMarker {
   };
 }
 
+export interface Zone {
+  id: string;
+  name: string;
+  /** Filename of the floor plan image for this zone */
+  floorPlanImage: string;
+  tables: TableMarker[];
+}
+
 export interface LocationConfig {
   id: string;
   name: string;
   description?: string;
-  /** Filename of the floor plan image (stored in /locations/{id}/) */
-  floorPlanImage: string;
-  tables: TableMarker[];
+  /** Label for zones - 'zone' or 'floor'. Defaults to 'zone' */
+  zoneLabel?: 'zone' | 'floor';
+  /** Multiple zones/floors in this location */
+  zones: Zone[];
+  
+  // Legacy fields for backwards compatibility (single zone)
+  /** @deprecated Use zones instead */
+  floorPlanImage?: string;
+  /** @deprecated Use zones instead */
+  tables?: TableMarker[];
 }
 
 export interface PendingMarker {

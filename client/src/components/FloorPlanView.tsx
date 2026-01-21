@@ -8,7 +8,14 @@ interface FloorPlanViewProps {
 }
 
 export const FloorPlanView: React.FC<FloorPlanViewProps> = ({ location, onTableClick }) => {
-  const { floorPlan, tables } = location;
+  const floorPlan = location.floorPlan;
+  // Get tables from first zone or legacy tables
+  const tables = location.zones?.[0]?.tables || location.tables || [];
+
+  // Return null if no floor plan data
+  if (!floorPlan) {
+    return <div className="floor-plan-container">No floor plan available</div>;
+  }
 
   const getStatusClass = (table: Table): string => {
     if (table.isAvailable) return 'available';
@@ -48,14 +55,14 @@ export const FloorPlanView: React.FC<FloorPlanViewProps> = ({ location, onTableC
             <rect
               x={table.position.x}
               y={table.position.y}
-              width={table.position.width}
-              height={table.position.height}
+              width={table.position.width || 80}
+              height={table.position.height || 60}
               rx="8"
               ry="8"
             />
             <text
-              x={table.position.x + table.position.width / 2}
-              y={table.position.y + table.position.height / 2 - 8}
+              x={table.position.x + (table.position.width || 80) / 2}
+              y={table.position.y + (table.position.height || 60) / 2 - 8}
               textAnchor="middle"
               dominantBaseline="middle"
               className="table-label"
@@ -63,8 +70,8 @@ export const FloorPlanView: React.FC<FloorPlanViewProps> = ({ location, onTableC
               {table.id}
             </text>
             <text
-              x={table.position.x + table.position.width / 2}
-              y={table.position.y + table.position.height / 2 + 8}
+              x={table.position.x + (table.position.width || 80) / 2}
+              y={table.position.y + (table.position.height || 60) / 2 + 8}
               textAnchor="middle"
               dominantBaseline="middle"
               className="table-status"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchLocation, getFloorPlanUrl } from '../services/api';
-import { Location, Table } from '../types';
+import { fetchLocation, getZoneFloorPlanUrl } from '../services/api';
+import { Location, Table, Zone } from '../types';
 import { FloorPlanView } from '../components/FloorPlanView';
 import { ImageFloorPlan } from '../components/ImageFloorPlan';
 import { TableCard } from '../components/TableCard';
@@ -14,6 +14,7 @@ export const LocationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [viewMode, setViewMode] = useState<'floor' | 'grid'>('floor');
+  const [activeZoneIndex, setActiveZoneIndex] = useState(0);
 
   useEffect(() => {
     const loadLocation = async () => {
@@ -68,11 +69,19 @@ export const LocationPage: React.FC = () => {
     );
   }
 
-  const availableCount = location.tables.filter(t => t.isAvailable).length;
+  // Get zones and active zone
+  const zones = location.zones || [];
+  const activeZone: Zone | null = zones[activeZoneIndex] || zones[0] || null;
+  const hasMultipleZones = zones.length > 1;
+
+  // Get tables from active zone (or all tables for legacy format)
+  const currentTables = activeZone?.tables || location.tables || [];
+  const availableCount = currentTables.filter(t => t.isAvailable).length;
   
-  // Determine if we have an image-based floor plan
-  const hasImageFloorPlan = !!location.floorPlanImage;
-  const floorPlanImageUrl = hasImageFloorPlan ? getFloorPlanUrl(location) : null;
+  // Determine if we have an image-based floor plan for this zone
+  const floorPlanImageUrl = activeZone 
+    ? getZoneFloorPlanUrl(location.id, activeZone)
+    : null;
 
   return (
     <div className="location-page">
@@ -82,7 +91,8 @@ export const LocationPage: React.FC = () => {
           <div className="header-info">
             <h1>{location.name}</h1>
             <p className="availability-summary">
-              <span className="highlight">{availableCount}</span> of {location.tables.length} desks available
+              <span className="highlight">{availableCount}</span> of {currentTables.length} desks available
+              {hasMultipleZones && activeZone && <span className="zone-indicator"> in {activeZone.name}</span>}
             </p>
           </div>
           <div className="view-toggle">
@@ -102,12 +112,33 @@ export const LocationPage: React.FC = () => {
         </div>
       </header>
 
+      {/* Zone/Floor tabs - only show if multiple zones */}
+      {hasMultipleZones && (
+        <div className="zone-switcher">
+          {zones.map((zone, index) => {
+            const zoneAvailable = zone.tables.filter(t => t.isAvailable).length;
+            return (
+              <button
+                key={zone.id}
+                className={`zone-btn ${activeZoneIndex === index ? 'active' : ''}`}
+                onClick={() => setActiveZoneIndex(index)}
+              >
+                <span className="zone-name">{zone.name}</span>
+                <span className="zone-availability">
+                  {zoneAvailable}/{zone.tables.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <main className="location-content">
         {viewMode === 'floor' ? (
-          hasImageFloorPlan && floorPlanImageUrl ? (
+          floorPlanImageUrl ? (
             <ImageFloorPlan 
               floorPlanImageUrl={floorPlanImageUrl}
-              tables={location.tables}
+              tables={currentTables}
               onTableClick={handleTableClick}
             />
           ) : (
@@ -115,7 +146,7 @@ export const LocationPage: React.FC = () => {
           )
         ) : (
           <div className="tables-grid">
-            {location.tables.map(table => (
+            {currentTables.map(table => (
               <TableCard key={table.id} table={table} onClick={handleTableClick} />
             ))}
           </div>

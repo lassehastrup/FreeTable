@@ -8,8 +8,10 @@ interface LocationCardProps {
 }
 
 export const LocationCard: React.FC<LocationCardProps> = ({ location }) => {
-  const availableCount = location.tables.filter(t => t.isAvailable).length;
-  const totalCount = location.tables.length;
+  // Get tables from zones or legacy tables field
+  const allTables = location.zones?.flatMap(z => z.tables) || location.tables || [];
+  const availableCount = allTables.filter(t => t.isAvailable).length;
+  const totalCount = allTables.length;
   const availabilityPercentage = totalCount > 0 ? Math.round((availableCount / totalCount) * 100) : 0;
 
   return (

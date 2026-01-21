@@ -28,13 +28,25 @@ export interface FloorPlan {
   imageUrl?: string;
 }
 
+export interface Zone {
+  id: string;
+  name: string;
+  floorPlanImage: string;
+  tables: Table[];
+}
+
 export interface Location {
   id: string;
   name: string;
   description?: string;
-  floorPlan: FloorPlan;
-  /** Floor plan image filename (stored in /locations/{id}/) */
+  /** Label for zones - 'zone' or 'floor'. Defaults to 'zone' */
+  zoneLabel?: 'zone' | 'floor';
+  /** Multiple zones/floors in this location */
+  zones: Zone[];
+  
+  // Legacy fields for backwards compatibility
+  floorPlan?: FloorPlan;
   floorPlanImage?: string;
-  tables: Table[];
+  tables?: Table[];
   updatedAt?: string;
 }

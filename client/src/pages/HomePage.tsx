@@ -51,11 +51,14 @@ export const HomePage: React.FC = () => {
     );
   }
 
+  const getLocationTables = (loc: Location) => 
+    loc.zones?.flatMap(z => z.tables) || loc.tables || [];
+
   const totalAvailable = locations.reduce(
-    (sum, loc) => sum + loc.tables.filter(t => t.isAvailable).length, 
+    (sum, loc) => sum + getLocationTables(loc).filter(t => t.isAvailable).length, 
     0
   );
-  const totalTables = locations.reduce((sum, loc) => sum + loc.tables.length, 0);
+  const totalTables = locations.reduce((sum, loc) => sum + getLocationTables(loc).length, 0);
 
   return (
     <div className="home-page">

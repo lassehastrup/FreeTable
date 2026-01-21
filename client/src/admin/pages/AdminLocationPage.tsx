@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TableMapper } from '../components/TableMapper';
 import { ImageUploader } from '../components/ImageUploader';
-import { TableMarker, LocationConfig } from '../types';
+import { TableMarker, LocationConfig, Zone } from '../types';
 import { fetchLocationConfig, getFloorPlanUrlById } from '../../services/api';
 import './AdminLocationPage.css';
 
@@ -10,11 +10,15 @@ export const AdminLocationPage: React.FC = () => {
   const { locationId } = useParams<{ locationId: string }>();
   const isNewLocation = locationId === 'new';
   const [step, setStep] = useState<'upload' | 'map' | 'export'>('upload');
-  const [floorPlanImage, setFloorPlanImage] = useState<string | null>(null);
   const [locationName, setLocationName] = useState(isNewLocation ? 'New Location' : locationId || '');
-  const [markers, setMarkers] = useState<TableMarker[]>([]);
+  const [zoneLabel, setZoneLabel] = useState<'zone' | 'floor'>('zone');
+  const [zones, setZones] = useState<Zone[]>([{ id: 'main', name: 'Main', floorPlanImage: '', tables: [] }]);
+  const [activeZoneIndex, setActiveZoneIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(!isNewLocation);
   const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Get active zone
+  const activeZone = zones[activeZoneIndex] || zones[0];
 
   // Load existing location data if editing
   useEffect(() => {
@@ -31,11 +35,15 @@ export const AdminLocationPage: React.FC = () => {
         const config = await fetchLocationConfig(locationId);
         if (config) {
           setLocationName(config.name);
-          setMarkers(config.tables);
+          setZoneLabel(config.zoneLabel || 'zone');
           
-          // Load the existing floor plan image
-          const floorPlanUrl = getFloorPlanUrlById(locationId, config.floorPlanImage);
-          setFloorPlanImage(floorPlanUrl);
+          // Load zones with floor plan URLs
+          const loadedZones = config.zones.map(zone => ({
+            ...zone,
+            floorPlanImage: getFloorPlanUrlById(locationId, zone.floorPlanImage),
+          }));
+          setZones(loadedZones);
+          setActiveZoneIndex(0);
         } else {
           setLoadError('Location not found');
         }
@@ -51,29 +59,83 @@ export const AdminLocationPage: React.FC = () => {
   }, [locationId, isNewLocation]);
 
   const handleImageSelect = (imageDataUrl: string) => {
-    setFloorPlanImage(imageDataUrl);
+    // Update the active zone's floor plan
+    setZones(prev => prev.map((z, i) => 
+      i === activeZoneIndex ? { ...z, floorPlanImage: imageDataUrl } : z
+    ));
   };
 
   const handleProceedToMapping = () => {
-    if (floorPlanImage) {
+    if (activeZone.floorPlanImage) {
       setStep('map');
     }
   };
 
   const handleMarkersChange = (newMarkers: TableMarker[]) => {
-    setMarkers(newMarkers);
+    // Update the active zone's tables
+    setZones(prev => prev.map((z, i) => 
+      i === activeZoneIndex ? { ...z, tables: newMarkers } : z
+    ));
   };
 
   const handleExport = () => {
     setStep('export');
   };
 
+  const addZone = () => {
+    const newZoneNum = zones.length + 1;
+    const label = zoneLabel === 'floor' ? 'Floor' : 'Zone';
+    const newZone: Zone = {
+      id: `${zoneLabel}-${newZoneNum}`,
+      name: `${label} ${newZoneNum}`,
+      floorPlanImage: '',
+      tables: [],
+    };
+    setZones([...zones, newZone]);
+    setActiveZoneIndex(zones.length);
+    setStep('upload'); // Go back to upload for new zone
+  };
+
+  const deleteZone = (index: number) => {
+    if (zones.length <= 1) return; // Keep at least one zone
+    const newZones = zones.filter((_, i) => i !== index);
+    setZones(newZones);
+    if (activeZoneIndex >= newZones.length) {
+      setActiveZoneIndex(newZones.length - 1);
+    }
+  };
+
+  const renameZone = (index: number, newName: string) => {
+    setZones(prev => prev.map((z, i) => 
+      i === index ? { ...z, name: newName } : z
+    ));
+  };
+
+  const getZoneLabelText = (plural = false) => {
+    if (zoneLabel === 'floor') return plural ? 'Floors' : 'Floor';
+    return plural ? 'Zones' : 'Zone';
+  };
+
   const generateConfig = (): LocationConfig => {
+    // Generate export config with proper file names for each zone
+    const exportZones = zones.map((zone) => {
+      // Generate filename based on zone id/name
+      const filename = zones.length === 1 
+        ? 'floorplan.png' 
+        : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+      return {
+        id: zone.id,
+        name: zone.name,
+        floorPlanImage: filename,
+        tables: zone.tables,
+      };
+    });
+
     return {
-      id: locationId || 'new-location',
+      id: locationId === 'new' ? locationName.toLowerCase().replace(/\s+/g, '-') : locationId || 'new-location',
       name: locationName,
-      floorPlanImage: 'floorplan.png', // Would be saved separately
-      tables: markers,
+      zoneLabel: zones.length > 1 ? zoneLabel : undefined,
+      zones: exportZones,
     };
   };
 
@@ -81,6 +143,39 @@ export const AdminLocationPage: React.FC = () => {
     navigator.clipboard.writeText(text);
     alert('Copied to clipboard!');
   };
+
+  const downloadConfig = () => {
+    const config = generateConfig();
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'config.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadFloorPlan = (zone: Zone) => {
+    if (!zone.floorPlanImage) return;
+    
+    // If it's a data URL (newly uploaded), download it
+    if (zone.floorPlanImage.startsWith('data:')) {
+      const filename = zones.length === 1 
+        ? 'floorplan.png' 
+        : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+      const a = document.createElement('a');
+      a.href = zone.floorPlanImage;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
+  const hasNewFloorPlans = zones.some(z => z.floorPlanImage?.startsWith('data:'));
+  const totalTables = zones.reduce((sum, z) => sum + z.tables.length, 0);
 
   // Show loading state
   if (isLoading) {
@@ -126,17 +221,82 @@ export const AdminLocationPage: React.FC = () => {
           <button 
             className="btn-secondary small"
             onClick={() => setStep('map')}
-            disabled={!floorPlanImage}
+            disabled={!activeZone.floorPlanImage}
           >
             Skip to Table Editing →
           </button>
         </div>
       )}
 
+      {/* Zone Tabs - show if more than 1 zone or in edit mode */}
+      {(zones.length > 1 || step === 'upload') && (
+        <div className="zone-tabs">
+          <div className="zone-tabs-header">
+            <span className="zone-label">{getZoneLabelText(true)}:</span>
+            {step === 'upload' && (
+              <div className="zone-label-toggle">
+                <button 
+                  className={`label-btn ${zoneLabel === 'zone' ? 'active' : ''}`}
+                  onClick={() => setZoneLabel('zone')}
+                >
+                  Zones
+                </button>
+                <button 
+                  className={`label-btn ${zoneLabel === 'floor' ? 'active' : ''}`}
+                  onClick={() => setZoneLabel('floor')}
+                >
+                  Floors
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="zone-tabs-list">
+            {zones.map((zone, index) => (
+              <button
+                key={zone.id}
+                className={`zone-tab ${activeZoneIndex === index ? 'active' : ''}`}
+                onClick={() => setActiveZoneIndex(index)}
+              >
+                {zone.name}
+                {zone.tables.length > 0 && <span className="zone-table-count">{zone.tables.length}</span>}
+              </button>
+            ))}
+            {step === 'upload' && (
+              <button className="zone-tab add-zone" onClick={addZone}>
+                + Add {getZoneLabelText()}
+              </button>
+            )}
+          </div>
+          {step === 'upload' && zones.length > 1 && (
+            <div className="zone-actions">
+              <button 
+                className="btn-small"
+                onClick={() => {
+                  const newName = prompt(`Rename ${getZoneLabelText()}:`, activeZone.name);
+                  if (newName) renameZone(activeZoneIndex, newName);
+                }}
+              >
+                ✏️ Rename
+              </button>
+              <button 
+                className="btn-small btn-danger"
+                onClick={() => {
+                  if (confirm(`Delete ${activeZone.name}? This cannot be undone.`)) {
+                    deleteZone(activeZoneIndex);
+                  }
+                }}
+              >
+                🗑️ Delete
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Progress Steps */}
       <div className="admin-steps">
         <div 
-          className={`step ${step === 'upload' ? 'active' : ''} ${floorPlanImage ? 'completed' : ''}`}
+          className={`step ${step === 'upload' ? 'active' : ''} ${activeZone.floorPlanImage ? 'completed' : ''}`}
           onClick={() => setStep('upload')}
           style={{ cursor: 'pointer' }}
         >
@@ -144,9 +304,9 @@ export const AdminLocationPage: React.FC = () => {
           <span className="step-label">{isNewLocation ? 'Upload' : 'Change'} Floor Plan</span>
         </div>
         <div 
-          className={`step ${step === 'map' ? 'active' : ''} ${markers.length > 0 ? 'completed' : ''}`}
-          onClick={() => floorPlanImage && setStep('map')}
-          style={{ cursor: floorPlanImage ? 'pointer' : 'not-allowed' }}
+          className={`step ${step === 'map' ? 'active' : ''} ${activeZone.tables.length > 0 ? 'completed' : ''}`}
+          onClick={() => activeZone.floorPlanImage && setStep('map')}
+          style={{ cursor: activeZone.floorPlanImage ? 'pointer' : 'not-allowed' }}
         >
           <span className="step-number">2</span>
           <span className="step-label">Place Tables</span>
@@ -171,26 +331,37 @@ export const AdminLocationPage: React.FC = () => {
               />
             </div>
 
+            {zones.length > 1 && (
+              <div className="current-zone-info">
+                Uploading floor plan for: <strong>{activeZone.name}</strong>
+              </div>
+            )}
+
             <ImageUploader 
-              currentImage={floorPlanImage || undefined}
+              currentImage={activeZone.floorPlanImage || undefined}
               onImageSelect={handleImageSelect}
             />
 
             <button 
               className="btn-primary large"
               onClick={handleProceedToMapping}
-              disabled={!floorPlanImage}
+              disabled={!activeZone.floorPlanImage}
             >
               Continue to Table Mapping →
             </button>
           </div>
         )}
 
-        {step === 'map' && floorPlanImage && (
+        {step === 'map' && activeZone.floorPlanImage && (
           <div className="step-content map-step">
+            {zones.length > 1 && (
+              <div className="current-zone-info map-zone-info">
+                Editing: <strong>{activeZone.name}</strong>
+              </div>
+            )}
             <TableMapper
-              floorPlanUrl={floorPlanImage}
-              existingMarkers={markers}
+              floorPlanUrl={activeZone.floorPlanImage}
+              existingMarkers={activeZone.tables}
               onMarkersChange={handleMarkersChange}
             />
 
@@ -201,9 +372,9 @@ export const AdminLocationPage: React.FC = () => {
               <button 
                 className="btn-primary"
                 onClick={handleExport}
-                disabled={markers.length === 0}
+                disabled={totalTables === 0}
               >
-                Export Configuration ({markers.length} tables) →
+                Export Configuration ({totalTables} tables) →
               </button>
             </div>
           </div>
@@ -212,10 +383,36 @@ export const AdminLocationPage: React.FC = () => {
         {step === 'export' && (
           <div className="step-content export-step">
             <h2>✅ Configuration Complete!</h2>
-            <p>Copy the JSON below and save it to your location config file:</p>
+            <p>
+              {zones.length > 1 
+                ? `${zones.length} ${getZoneLabelText(true).toLowerCase()} with ${totalTables} tables configured.`
+                : `${totalTables} tables configured.`
+              }
+            </p>
+
+            <div className="export-actions-top">
+              <button className="btn-primary" onClick={downloadConfig}>
+                📥 Download config.json
+              </button>
+              {hasNewFloorPlans && (
+                <div className="floorplan-downloads">
+                  {zones.map((zone) => (
+                    zone.floorPlanImage?.startsWith('data:') && (
+                      <button 
+                        key={zone.id}
+                        className="btn-secondary"
+                        onClick={() => downloadFloorPlan(zone)}
+                      >
+                        📥 Download {zones.length > 1 ? `${zone.name} ` : ''}Floor Plan
+                      </button>
+                    )
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="export-path">
-              <code>locations/{locationId || 'your-location'}/config.json</code>
+              <code>locations/{generateConfig().id}/config.json</code>
             </div>
 
             <div className="export-box">
@@ -231,9 +428,18 @@ export const AdminLocationPage: React.FC = () => {
             <div className="export-instructions">
               <h3>Next Steps:</h3>
               <ol>
-                <li>Save the floor plan image to <code>locations/{locationId}/floorplan.png</code></li>
-                <li>Save the JSON config to <code>locations/{locationId}/config.json</code></li>
-                <li>Run <code>pwsh ./scripts/Get-TableAvailability.ps1</code> to fetch calendar data</li>
+                {zones.map((zone) => {
+                  const filename = zones.length === 1 
+                    ? 'floorplan.png' 
+                    : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+                  return zone.floorPlanImage?.startsWith('data:') ? (
+                    <li key={zone.id}>
+                      Save the {zones.length > 1 ? `${zone.name} ` : ''}floor plan image to <code>locations/{generateConfig().id}/{filename}</code>
+                    </li>
+                  ) : null;
+                })}
+                <li>Save the JSON config to <code>locations/{generateConfig().id}/config.json</code></li>
+                <li>Run <code>pwsh ./powershell/Update-Availability.ps1</code> to fetch calendar data</li>
               </ol>
             </div>
 
