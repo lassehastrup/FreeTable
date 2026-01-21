@@ -1,35 +1,56 @@
 {
   "id": "skanderborg",
-  "name": "Skanderborg Office",
-  "description": "Branch office in Skanderborg",
-  "floorPlan": {
-    "width": 600,
-    "height": 400
-  },
-  "tables": [
+  "name": "skanderborg",
+  "zoneLabel": "zone",
+  "zones": [
     {
-      "id": "S1",
-      "name": "Table S1",
-      "assignedUser": "user6@yourdomain.com",
-      "position": { "x": 50, "y": 50, "width": 80, "height": 60 }
+      "id": "main",
+      "name": "Main",
+      "floorPlanImage": "skanderborg.svg",
+      "tables": []
     },
     {
-      "id": "S2",
-      "name": "Table S2",
-      "assignedUser": "user7@yourdomain.com",
-      "position": { "x": 150, "y": 50, "width": 80, "height": 60 }
-    },
-    {
-      "id": "S3",
-      "name": "Table S3",
-      "assignedUser": null,
-      "position": { "x": 250, "y": 50, "width": 80, "height": 60 }
-    },
-    {
-      "id": "S4",
-      "name": "Table S4",
-      "assignedUser": "user8@yourdomain.com",
-      "position": { "x": 50, "y": 150, "width": 80, "height": 60 }
+      "id": "zone-2",
+      "name": "Floor 1",
+      "floorPlanImage": "skanderborg-floor1.svg",
+      "tables": [
+        {
+          "id": "T1",
+          "name": "Table 1",
+          "assignedUser": null,
+          "position": {
+            "x": 71.63865546218487,
+            "y": 22.388232690950087
+          }
+        },
+        {
+          "id": "T2",
+          "name": "Table 2",
+          "assignedUser": null,
+          "position": {
+            "x": 72.89915966386555,
+            "y": 40.86526810456552
+          }
+        },
+        {
+          "id": "T3",
+          "name": "Table 3",
+          "assignedUser": null,
+          "position": {
+            "x": 94.53781512605042,
+            "y": 24.14152802216907
+          }
+        },
+        {
+          "id": "T4",
+          "name": "Table 4",
+          "assignedUser": null,
+          "position": {
+            "x": 92.96218487394958,
+            "y": 41.40474359109444
+          }
+        }
+      ]
     }
   ]
 }

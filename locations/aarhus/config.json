@@ -1,25 +1,56 @@
 {
-  "id": "aarhus",
-  "name": "aarhus",
-  "floorPlanImage": "AarhusOffice.drawio.svg",
-  "tables": [
+  "id": "Aarhus",
+  "name": "Aarhus",
+  "zoneLabel": "zone",
+  "zones": [
     {
-      "id": "T1",
-      "name": "Table 1",
-      "assignedUser": "Lasse.hastrup@fellowmind.dk",
-      "position": {
-        "x": 11.817226890756302,
-        "y": 9.720829915854067
-      }
+      "id": "main",
+      "name": "Main",
+      "floorPlanImage": "floorplan-main.png",
+      "tables": []
     },
     {
-      "id": "T2",
-      "name": "Table 2",
-      "assignedUser": "stephan.fuhlendorff@fellowmind.dk",
-      "position": {
-        "x": 11.922268907563026,
-        "y": 22.941158601415594
-      }
+      "id": "zone-2",
+      "name": "Floor 1",
+      "floorPlanImage": "floorplan-zone-2.png",
+      "tables": [
+        {
+          "id": "T1",
+          "name": "Table 1",
+          "assignedUser": null,
+          "position": {
+            "x": 71.63865546218487,
+            "y": 22.388232690950087
+          }
+        },
+        {
+          "id": "T2",
+          "name": "Table 2",
+          "assignedUser": null,
+          "position": {
+            "x": 72.89915966386555,
+            "y": 40.86526810456552
+          }
+        },
+        {
+          "id": "T3",
+          "name": "Table 3",
+          "assignedUser": null,
+          "position": {
+            "x": 94.53781512605042,
+            "y": 24.14152802216907
+          }
+        },
+        {
+          "id": "T4",
+          "name": "Table 4",
+          "assignedUser": null,
+          "position": {
+            "x": 92.96218487394958,
+            "y": 41.40474359109444
+          }
+        }
+      ]
     }
   ]
 }
