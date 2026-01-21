@@ -2,7 +2,7 @@
   "id": "aarhus",
   "name": "Aarhus",
   "zoneLabel": "zone",
-  "overviewImage": "AarhusOffice.drawio.svg",
+  "overviewImage": "aarhus-building.svg",
   "zones": [
     {
       "id": "zone-1768997571876",

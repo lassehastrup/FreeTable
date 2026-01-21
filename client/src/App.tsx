@@ -14,7 +14,7 @@ const AnimatedBackground: React.FC = () => (
       <div className="orb orb-3"></div>
     </div>
     <div className="particles">
-      {[...Array(10)].map((_, i) => (
+      {[...Array(20)].map((_, i) => (
         <div key={i} className="particle"></div>
       ))}
     </div>

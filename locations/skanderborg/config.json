@@ -1,26 +1,20 @@
 {
   "id": "skanderborg",
   "name": "skanderborg",
-  "zoneLabel": "zone",
+  "overviewImage": "skanderborg-building.svg",
   "zones": [
     {
-      "id": "main",
-      "name": "Main",
-      "floorPlanImage": "skanderborg.svg",
-      "tables": []
-    },
-    {
-      "id": "zone-2",
-      "name": "Floor 1",
-      "floorPlanImage": "skanderborg-floor1.svg",
+      "id": "zone-1769008868855",
+      "name": "Zone 1",
+      "floorPlanImage": "skanderborg-zone-1.svg",
       "tables": [
         {
           "id": "T1",
           "name": "Table 1",
           "assignedUser": null,
           "position": {
-            "x": 71.63865546218487,
-            "y": 22.388232690950087
+            "x": 73.15087524274678,
+            "y": 24.196416579924502
           }
         },
         {
@@ -28,8 +22,8 @@
           "name": "Table 2",
           "assignedUser": null,
           "position": {
-            "x": 72.89915966386555,
-            "y": 40.86526810456552
+            "x": 94.45264942902111,
+            "y": 23.200093544280552
           }
         },
         {
@@ -37,8 +31,8 @@
           "name": "Table 3",
           "assignedUser": null,
           "position": {
-            "x": 94.53781512605042,
-            "y": 24.14152802216907
+            "x": 72.59614153997921,
+            "y": 41.2762400481065
           }
         },
         {
@@ -46,11 +40,15 @@
           "name": "Table 4",
           "assignedUser": null,
           "position": {
-            "x": 92.96218487394958,
-            "y": 41.40474359109444
+            "x": 93.12128854237895,
+            "y": 40.56458073693226
           }
         }
-      ]
+      ],
+      "position": {
+        "x": 51.55555216471354,
+        "y": 27.22772277227723
+      }
     }
   ]
 }

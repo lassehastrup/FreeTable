@@ -202,12 +202,16 @@
 
 .step-label {
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #475569;
   font-size: 0.95rem;
 }
 
 .step.active .step-label {
-  color: var(--primary-color);
+  color: #6366f1;
+}
+
+.step.completed .step-label {
+  color: #166534;
 }
 
 /* Zone Tabs */
@@ -704,7 +708,7 @@
 
 .marker-name {
   font-weight: 700;
-  color: var(--text-primary);
+  color: #0f172a;
   white-space: nowrap;
   font-size: 0.95rem;
 }
@@ -741,7 +745,7 @@
 
 .zone-positions-list h4 {
   margin: 0 0 16px 0;
-  color: var(--text-primary);
+  color: #0f172a;
   font-size: 1rem;
   font-weight: 700;
 }
@@ -750,13 +754,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border-color);
-  font-weight: 500;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border-radius: var(--radius-md);
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  font-weight: 600;
+  color: #0f172a;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
 }
 
 .zone-position-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.zone-position-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.zone-position-item > span {
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .zone-position-item.placed .position-status {
@@ -936,14 +956,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-secondary);
+  color: #475569;
 }
 
 .zone-tab-btn:hover {
   border-color: var(--primary-color);
-  color: var(--primary-color);
+  color: #6366f1;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.zone-tab-btn.has-image {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  color: #166534;
+}
+
+.zone-tab-btn.has-image:hover {
+  color: #15803d;
+  border-color: #059669;
 }
 
 .zone-tab-btn.active {

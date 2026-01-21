@@ -172,13 +172,28 @@ export const AdminLocationPage: React.FC = () => {
   // Get zones that have been placed on overview (have position)
   const overviewZones = zones.filter(z => z.position);
 
+  // Helper to get location name for filenames (lowercase)
+  const getLocationFilePrefix = () => {
+    const id = locationId === 'new' ? locationName.toLowerCase().replace(/\s+/g, '-') : locationId || 'new-location';
+    return id.toLowerCase();
+  };
+
+  // Get overview image filename
+  const getOverviewFilename = () => `${getLocationFilePrefix()}-building.svg`;
+
+  // Get zone floor plan filename - uses zone name number if available (e.g., "Zone 1" -> 1)
+  const getZoneFilename = (zone: Zone, fallbackIndex: number) => {
+    const prefix = getLocationFilePrefix().toLowerCase();
+    // Try to extract number from zone name (e.g., "Zone 1", "Floor 2", "Zone A" -> use number if found)
+    const numberMatch = zone.name.match(/(\d+)/);
+    const zoneNumber = numberMatch ? numberMatch[1] : String(fallbackIndex + 1);
+    return `${prefix}-zone-${zoneNumber}.svg`;
+  };
+
   const generateConfig = (): LocationConfig => {
     // Generate export config with proper file names for each zone
-    const exportZones = zones.map((zone) => {
-      // Generate filename based on zone id/name
-      const filename = zones.length === 1 
-        ? 'floorplan.png' 
-        : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+    const exportZones = zones.map((zone, index) => {
+      const filename = getZoneFilename(zone, index);
       return {
         id: zone.id,
         name: zone.name,
@@ -192,14 +207,13 @@ export const AdminLocationPage: React.FC = () => {
       id: locationId === 'new' ? locationName.toLowerCase().replace(/\s+/g, '-') : locationId || 'new-location',
       name: locationName,
       zoneLabel: zones.length > 1 ? zoneLabel : undefined,
-      overviewImage: overviewImage && zones.length > 1 ? 'overview.png' : undefined,
+      overviewImage: overviewImage ? getOverviewFilename() : undefined,
       zones: exportZones,
     };
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
   };
 
   const downloadConfig = () => {
@@ -215,14 +229,12 @@ export const AdminLocationPage: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
-  const downloadFloorPlan = (zone: Zone) => {
+  const downloadFloorPlan = (zone: Zone, index: number) => {
     if (!zone.floorPlanImage) return;
     
     // If it's a data URL (newly uploaded), download it
     if (zone.floorPlanImage.startsWith('data:')) {
-      const filename = zones.length === 1 
-        ? 'floorplan.png' 
-        : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+      const filename = getZoneFilename(zone, index);
       const a = document.createElement('a');
       a.href = zone.floorPlanImage;
       a.download = filename;
@@ -236,7 +248,7 @@ export const AdminLocationPage: React.FC = () => {
     if (!overviewImage || !overviewImage.startsWith('data:')) return;
     const a = document.createElement('a');
     a.href = overviewImage;
-    a.download = 'overview.png';
+    a.download = getOverviewFilename();
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -628,12 +640,12 @@ export const AdminLocationPage: React.FC = () => {
               )}
               {hasNewFloorPlans && (
                 <div className="floorplan-downloads">
-                  {zones.map((zone) => (
+                  {zones.map((zone, index) => (
                     zone.floorPlanImage?.startsWith('data:') && (
                       <button 
                         key={zone.id}
                         className="btn-secondary"
-                        onClick={() => downloadFloorPlan(zone)}
+                        onClick={() => downloadFloorPlan(zone, index)}
                       >
                         📥 Download {zones.length > 1 ? `${zone.name} ` : ''}Floor Plan
                       </button>
@@ -661,12 +673,10 @@ export const AdminLocationPage: React.FC = () => {
               <h3>Next Steps:</h3>
               <ol>
                 {hasNewOverviewImage && (
-                  <li>Save the overview image to <code>locations/{generateConfig().id}/overview.png</code></li>
+                  <li>Save the overview image to <code>locations/{generateConfig().id}/{getOverviewFilename()}</code></li>
                 )}
-                {zones.map((zone) => {
-                  const filename = zones.length === 1 
-                    ? 'floorplan.png' 
-                    : `floorplan-${zone.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+                {zones.map((zone, index) => {
+                  const filename = getZoneFilename(zone, index);
                   return zone.floorPlanImage?.startsWith('data:') ? (
                     <li key={zone.id}>
                       Save the {zones.length > 1 ? `${zone.name} ` : ''}floor plan image to <code>locations/{generateConfig().id}/{filename}</code>

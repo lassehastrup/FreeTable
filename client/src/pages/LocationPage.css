@@ -161,16 +161,29 @@
   border-color: var(--accent-purple);
 }
 
-/* Overview Mode */
+/* Overview Mode - Side by side layout */
 .overview-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .overview-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overview-main {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 20px;
 }
 
 .overview-image-wrapper {
   position: relative;
-  background: var(--bg-card);
+  background: var(--bg-card, rgba(15, 15, 42, 0.8));
   border-radius: 20px;
   border: 1px solid rgba(0, 245, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -187,6 +200,151 @@
   opacity: 0.9;
 }
 
+/* Sidebar */
+.overview-sidebar {
+  background: rgba(10, 10, 30, 0.6);
+  border: 2px solid rgba(0, 245, 255, 0.2);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    0 0 30px rgba(0, 245, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 245, 255, 0.15);
+}
+
+.sidebar-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.5));
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.overview-zone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.overview-zone-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.overview-zone-card:hover {
+  background: rgba(0, 245, 255, 0.1);
+  border-color: rgba(0, 245, 255, 0.4);
+  transform: translateX(4px);
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.15);
+}
+
+.zone-card-indicator {
+  width: 6px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.zone-card-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, #10b981, #00f5ff);
+  border-radius: 3px;
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+}
+
+.zone-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.zone-card-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.zone-card-stats {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.zone-card-stats .highlight {
+  color: #00f5ff;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+}
+
+.zone-card-arrow {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.overview-zone-card:hover .zone-card-arrow {
+  color: #00f5ff;
+  transform: translateX(4px);
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.8);
+}
+
+/* Zone content animation */
+.zone-content-wrapper {
+  animation: zoneEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes zoneEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .overview-zone-marker {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -195,8 +353,8 @@
   align-items: center;
   gap: 6px;
   padding: 14px 24px;
-  background: var(--bg-card);
-  border: 2px solid var(--accent-cyan);
+  background: rgba(10, 10, 30, 0.8);
+  border: 2px solid #00f5ff;
   border-radius: 14px;
   cursor: pointer;
   backdrop-filter: blur(10px);
@@ -209,7 +367,7 @@
 
 .overview-zone-marker:hover {
   transform: translate(-50%, -50%) scale(1.08);
-  border-color: var(--accent-purple);
+  border-color: #a855f7;
   box-shadow: 
     0 12px 35px rgba(0, 0, 0, 0.4),
     0 0 50px rgba(168, 85, 247, 0.3);
@@ -218,7 +376,7 @@
 .zone-marker-name {
   font-weight: 800;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: #ffffff;
   letter-spacing: -0.01em;
 }
 
@@ -231,19 +389,19 @@
 
 .zone-marker-stats.good {
   background: rgba(16, 185, 129, 0.2);
-  color: var(--accent-green);
+  color: #10b981;
   box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
 }
 
 .zone-marker-stats.some {
   background: rgba(251, 191, 36, 0.2);
-  color: var(--accent-yellow);
+  color: #fbbf24;
   box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
 }
 
 .zone-marker-stats.none {
   background: rgba(239, 68, 68, 0.2);
-  color: var(--accent-red);
+  color: #ef4444;
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
 }
 
