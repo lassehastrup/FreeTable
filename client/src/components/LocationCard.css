@@ -1,102 +1,135 @@
+/* Sci-Fi Location Card */
 .location-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  padding: 28px;
+  background: var(--bg-card);
+  border-radius: 20px;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 245, 255, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated border glow */
+.location-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  animation: borderScan 3s linear infinite;
+}
+
+@keyframes borderScan {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 .location-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(0, 245, 255, 0.4);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 245, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .location-card-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .location-name {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #2d3748;
+  color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .location-description {
   font-size: 0.9rem;
-  color: #718096;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .location-stats {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .availability-ring {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
+  position: relative;
 }
 
 .circular-chart {
   display: block;
   max-width: 100%;
+  filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.3));
 }
 
 .circle-bg {
   fill: none;
-  stroke: #eee;
+  stroke: rgba(255, 255, 255, 0.1);
   stroke-width: 3.8;
 }
 
 .circle {
   fill: none;
-  stroke: #48bb78;
+  stroke: url(#gradient) var(--accent-cyan);
   stroke-width: 3.8;
   stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
+  animation: progress 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  filter: drop-shadow(0 0 6px var(--accent-cyan));
 }
 
 @keyframes progress {
-  0% {
-    stroke-dasharray: 0 100;
-  }
+  0% { stroke-dasharray: 0 100; }
 }
 
 .percentage {
-  fill: #2d3748;
-  font-size: 0.5rem;
-  font-weight: 700;
+  fill: var(--text-primary);
+  font-size: 0.45rem;
+  font-weight: 800;
   text-anchor: middle;
 }
 
 .stats-text {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .available-count {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stats-label {
   font-size: 0.85rem;
-  color: #718096;
+  color: var(--text-secondary);
 }
 
 .last-updated {
   font-size: 0.75rem;
-  color: #a0aec0;
+  color: var(--text-muted);
   margin: 0;
   text-align: right;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }

@@ -1,49 +1,80 @@
+/* Sci-Fi Home Page */
 .home-page {
   min-height: 100vh;
-  padding: 40px 20px;
-  max-width: 1200px;
+  padding: 60px 24px;
+  max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .home-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 .home-header h1 {
-  font-size: 2.5rem;
-  color: #2d3748;
-  margin: 0 0 8px 0;
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #00f5ff 0%, #a855f7 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 60px rgba(0, 245, 255, 0.3);
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.4)); }
+  50% { filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.6)); }
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: #718096;
-  margin: 0 0 20px 0;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0 0 28px 0;
+  font-weight: 400;
 }
 
 .global-stats {
   font-size: 1rem;
-  color: #4a5568;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  border-radius: 30px;
+  border: 1px solid var(--border-glow);
+  backdrop-filter: blur(10px);
 }
 
 .stat-highlight {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #48bb78;
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .locations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 28px;
 }
 
 .no-locations {
   text-align: center;
-  color: #718096;
+  color: var(--text-muted);
   font-size: 1.1rem;
   grid-column: 1 / -1;
+  padding: 60px;
+  background: var(--bg-card);
+  border-radius: 20px;
+  border: 1px dashed var(--border-glow);
 }
 
 .loading-container {
@@ -52,60 +83,68 @@
   align-items: center;
   justify-content: center;
   min-height: 50vh;
-  gap: 16px;
+  gap: 20px;
 }
 
 .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #4299e1;
+  width: 56px;
+  height: 56px;
+  border: 3px solid rgba(0, 245, 255, 0.1);
+  border-top-color: var(--accent-cyan);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
 }
 
 .error-container {
   text-align: center;
-  padding: 40px;
-  background: #fff5f5;
-  border-radius: 16px;
-  border: 2px solid #fc8181;
+  padding: 48px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .error-container h2 {
-  color: #c53030;
-  margin: 0 0 12px 0;
+  color: var(--accent-red);
+  margin: 0 0 16px 0;
+  font-weight: 700;
 }
 
 .error-container p {
-  color: #742a2a;
+  color: rgba(239, 68, 68, 0.8);
   margin: 0;
 }
 
 .help-text {
-  margin-top: 20px;
-  padding: 16px;
-  background: #edf2f7;
-  border-radius: 8px;
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-glow);
 }
 
 .help-text p {
-  color: #4a5568;
-  margin-bottom: 8px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
 }
 
 .help-text code {
   display: block;
-  padding: 12px;
-  background: #2d3748;
-  color: #68d391;
-  border-radius: 6px;
-  font-family: 'Fira Code', monospace;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--accent-cyan);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.9rem;
+  border: 1px solid rgba(0, 245, 255, 0.2);
 }
