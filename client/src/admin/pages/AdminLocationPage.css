@@ -26,6 +26,54 @@
   color: #2b6cb0;
 }
 
+/* Loading and Error States */
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #718096;
+}
+
+.error-message {
+  color: #e53e3e;
+  background: #fff5f5;
+  border-radius: 12px;
+}
+
+/* Edit Mode Banner */
+.edit-mode-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f6e05e 0%, #ecc94b 100%);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  color: #744210;
+  font-weight: 600;
+}
+
+.edit-mode-banner .btn-secondary.small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.edit-mode-banner .btn-secondary.small:hover {
+  background: white;
+}
+
+.edit-mode-banner .btn-secondary.small:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Progress Steps */
 .admin-steps {
   display: flex;
@@ -44,6 +92,10 @@
   gap: 10px;
   opacity: 0.5;
   transition: opacity 0.3s;
+}
+
+.step:hover {
+  opacity: 0.8;
 }
 
 .step.active,

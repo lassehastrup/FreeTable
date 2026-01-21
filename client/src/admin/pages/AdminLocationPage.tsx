@@ -1,16 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TableMapper } from '../components/TableMapper';
 import { ImageUploader } from '../components/ImageUploader';
 import { TableMarker, LocationConfig } from '../types';
+import { fetchLocationConfig, getFloorPlanUrlById } from '../../services/api';
 import './AdminLocationPage.css';
 
 export const AdminLocationPage: React.FC = () => {
   const { locationId } = useParams<{ locationId: string }>();
+  const isNewLocation = locationId === 'new';
   const [step, setStep] = useState<'upload' | 'map' | 'export'>('upload');
   const [floorPlanImage, setFloorPlanImage] = useState<string | null>(null);
-  const [locationName, setLocationName] = useState(locationId || 'New Location');
+  const [locationName, setLocationName] = useState(isNewLocation ? 'New Location' : locationId || '');
   const [markers, setMarkers] = useState<TableMarker[]>([]);
+  const [isLoading, setIsLoading] = useState(!isNewLocation);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Load existing location data if editing
+  useEffect(() => {
+    if (isNewLocation || !locationId) {
+      setIsLoading(false);
+      return;
+    }
+
+    const loadLocationData = async () => {
+      setIsLoading(true);
+      setLoadError(null);
+      
+      try {
+        const config = await fetchLocationConfig(locationId);
+        if (config) {
+          setLocationName(config.name);
+          setMarkers(config.tables);
+          
+          // Load the existing floor plan image
+          const floorPlanUrl = getFloorPlanUrlById(locationId, config.floorPlanImage);
+          setFloorPlanImage(floorPlanUrl);
+        } else {
+          setLoadError('Location not found');
+        }
+      } catch (error) {
+        console.error('Failed to load location:', error);
+        setLoadError('Failed to load location configuration');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadLocationData();
+  }, [locationId, isNewLocation]);
 
   const handleImageSelect = (imageDataUrl: string) => {
     setFloorPlanImage(imageDataUrl);
@@ -44,20 +82,72 @@ export const AdminLocationPage: React.FC = () => {
     alert('Copied to clipboard!');
   };
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="admin-location-page">
+        <header className="admin-header">
+          <Link to="/admin" className="back-link">← Back to Admin</Link>
+          <h1>🛠️ Loading...</h1>
+        </header>
+        <main className="admin-content">
+          <div className="loading-message">Loading location configuration...</div>
+        </main>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (loadError) {
+    return (
+      <div className="admin-location-page">
+        <header className="admin-header">
+          <Link to="/admin" className="back-link">← Back to Admin</Link>
+          <h1>🛠️ Error</h1>
+        </header>
+        <main className="admin-content">
+          <div className="error-message">{loadError}</div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-location-page">
       <header className="admin-header">
         <Link to="/admin" className="back-link">← Back to Admin</Link>
-        <h1>🛠️ Configure: {locationName}</h1>
+        <h1>🛠️ {isNewLocation ? 'Create' : 'Edit'}: {locationName}</h1>
       </header>
+
+      {/* Edit mode quick actions */}
+      {!isNewLocation && step === 'upload' && (
+        <div className="edit-mode-banner">
+          <span>📝 Editing existing location</span>
+          <button 
+            className="btn-secondary small"
+            onClick={() => setStep('map')}
+            disabled={!floorPlanImage}
+          >
+            Skip to Table Editing →
+          </button>
+        </div>
+      )}
 
       {/* Progress Steps */}
       <div className="admin-steps">
-        <div className={`step ${step === 'upload' ? 'active' : ''} ${floorPlanImage ? 'completed' : ''}`}>
+        <div 
+          className={`step ${step === 'upload' ? 'active' : ''} ${floorPlanImage ? 'completed' : ''}`}
+          onClick={() => setStep('upload')}
+          style={{ cursor: 'pointer' }}
+        >
           <span className="step-number">1</span>
-          <span className="step-label">Upload Floor Plan</span>
+          <span className="step-label">{isNewLocation ? 'Upload' : 'Change'} Floor Plan</span>
         </div>
-        <div className={`step ${step === 'map' ? 'active' : ''} ${markers.length > 0 ? 'completed' : ''}`}>
+        <div 
+          className={`step ${step === 'map' ? 'active' : ''} ${markers.length > 0 ? 'completed' : ''}`}
+          onClick={() => floorPlanImage && setStep('map')}
+          style={{ cursor: floorPlanImage ? 'pointer' : 'not-allowed' }}
+        >
           <span className="step-number">2</span>
           <span className="step-label">Place Tables</span>
         </div>

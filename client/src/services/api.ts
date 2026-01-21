@@ -62,3 +62,36 @@ export function getFloorPlanUrl(location: Location): string {
   const imageName = location.floorPlanImage || 'floorplan.svg';
   return `${LOCATIONS_BASE_URL}/${location.id}/${imageName}`;
 }
+
+/**
+ * Fetch raw location config for admin editing
+ */
+export async function fetchLocationConfig(locationId: string): Promise<{
+  id: string;
+  name: string;
+  floorPlanImage: string;
+  tables: Array<{
+    id: string;
+    name: string;
+    assignedUser: string | null;
+    position: { x: number; y: number };
+  }>;
+} | null> {
+  try {
+    const response = await fetch(`${LOCATIONS_BASE_URL}/${locationId}/config.json`);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching location config ${locationId}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Get the floor plan URL for a location by ID
+ */
+export function getFloorPlanUrlById(locationId: string, imageName: string): string {
+  return `${LOCATIONS_BASE_URL}/${locationId}/${imageName}`;
+}

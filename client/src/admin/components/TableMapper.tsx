@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { TableMarker, PendingMarker } from './types';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { TableMarker, PendingMarker } from '../types';
 import './TableMapper.css';
 
 interface TableMapperProps {
@@ -16,24 +16,86 @@ export const TableMapper: React.FC<TableMapperProps> = ({
   const [markers, setMarkers] = useState<TableMarker[]>(existingMarkers);
   const [pendingMarker, setPendingMarker] = useState<PendingMarker | null>(null);
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
+  const [draggingMarkerId, setDraggingMarkerId] = useState<string | null>(null);
+  const [isDragMode, setIsDragMode] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
-  const handleImageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!imageRef.current) return;
+  // Sync with external markers when they change (e.g., loading existing location)
+  useEffect(() => {
+    setMarkers(existingMarkers);
+  }, [existingMarkers]);
 
+  const getPositionFromEvent = useCallback((e: React.MouseEvent | MouseEvent) => {
+    if (!imageRef.current) return null;
     const rect = imageRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
+    // Clamp to image bounds
+    return {
+      x: Math.max(0, Math.min(100, x)),
+      y: Math.max(0, Math.min(100, y)),
+    };
+  }, []);
+
+  const handleImageClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Don't create new marker if we're dragging or in drag mode
+    if (draggingMarkerId || isDragMode) return;
+    if (!imageRef.current) return;
+
+    const position = getPositionFromEvent(e);
+    if (!position) return;
 
     // Create a pending marker at click position
     const newId = `T${markers.length + 1}`;
     setPendingMarker({
       id: newId,
       name: `Table ${markers.length + 1}`,
-      position: { x, y },
+      position,
     });
     setSelectedMarkerId(null);
-  }, [markers.length]);
+  }, [markers.length, draggingMarkerId, isDragMode, getPositionFromEvent]);
+
+  // Handle marker drag start
+  const handleMarkerMouseDown = useCallback((e: React.MouseEvent, id: string) => {
+    if (!isDragMode) return;
+    e.stopPropagation();
+    e.preventDefault();
+    setDraggingMarkerId(id);
+    setSelectedMarkerId(id);
+    setPendingMarker(null);
+  }, [isDragMode]);
+
+  // Handle mouse move for dragging
+  useEffect(() => {
+    if (!draggingMarkerId) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const position = getPositionFromEvent(e);
+      if (!position) return;
+
+      setMarkers(prev => prev.map(m => 
+        m.id === draggingMarkerId 
+          ? { ...m, position }
+          : m
+      ));
+    };
+
+    const handleMouseUp = () => {
+      if (draggingMarkerId) {
+        // Notify parent of change
+        onMarkersChange(markers);
+      }
+      setDraggingMarkerId(null);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [draggingMarkerId, getPositionFromEvent, markers, onMarkersChange]);
 
   const confirmMarker = (assignedUser: string | null) => {
     if (!pendingMarker) return;
@@ -68,6 +130,8 @@ export const TableMapper: React.FC<TableMapperProps> = ({
 
   const handleMarkerClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
+    // In drag mode, don't toggle selection on click (handled by mousedown/up)
+    if (isDragMode) return;
     setSelectedMarkerId(selectedMarkerId === id ? null : id);
     setPendingMarker(null);
   };
@@ -77,13 +141,32 @@ export const TableMapper: React.FC<TableMapperProps> = ({
   return (
     <div className="table-mapper">
       <div className="mapper-instructions">
-        <h3>📍 Click on the floor plan to place table markers</h3>
-        <p>Click anywhere on the image to add a new table. Click existing markers to edit them.</p>
+        <h3>📍 {isDragMode ? 'Drag tables to reposition them' : 'Click on the floor plan to place table markers'}</h3>
+        <p>
+          {isDragMode 
+            ? 'Click and drag any table marker to move it. Toggle off Move Mode to add new tables.'
+            : 'Click anywhere on the image to add a new table. Click existing markers to edit them.'
+          }
+        </p>
+        <div className="mode-toggle">
+          <button 
+            className={`mode-btn ${!isDragMode ? 'active' : ''}`}
+            onClick={() => setIsDragMode(false)}
+          >
+            ➕ Add Mode
+          </button>
+          <button 
+            className={`mode-btn ${isDragMode ? 'active' : ''}`}
+            onClick={() => setIsDragMode(true)}
+          >
+            ✋ Move Mode
+          </button>
+        </div>
       </div>
 
       <div className="mapper-container">
         <div 
-          className="mapper-image-wrapper" 
+          className={`mapper-image-wrapper ${isDragMode ? 'drag-mode' : ''}`}
           ref={imageRef}
           onClick={handleImageClick}
         >
@@ -98,12 +181,13 @@ export const TableMapper: React.FC<TableMapperProps> = ({
           {markers.map((marker) => (
             <div
               key={marker.id}
-              className={`mapper-marker ${selectedMarkerId === marker.id ? 'selected' : ''}`}
+              className={`mapper-marker ${selectedMarkerId === marker.id ? 'selected' : ''} ${draggingMarkerId === marker.id ? 'dragging' : ''} ${isDragMode ? 'draggable' : ''}`}
               style={{
                 left: `${marker.position.x}%`,
                 top: `${marker.position.y}%`,
               }}
               onClick={(e) => handleMarkerClick(e, marker.id)}
+              onMouseDown={(e) => handleMarkerMouseDown(e, marker.id)}
             >
               <span className="marker-id">{marker.id}</span>
             </div>

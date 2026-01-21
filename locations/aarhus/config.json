@@ -1,7 +1,7 @@
 {
   "id": "aarhus",
   "name": "aarhus",
-  "floorPlanImage": "floorplan.svg",
+  "floorPlanImage": "AarhusOffice.drawio.svg",
   "tables": [
     {
       "id": "T1",

@@ -8,10 +8,16 @@ param(
     [string]$Email = "lasse.hastrup@fellowmind.dk"
 )
 
+$tenantId = "057ea9a3-ad57-4c97-bf75-ad494ec38d64"
+$clientId = "<app-client-id>"
+
+# -ClientId $clientId
+Connect-MgGraph -TenantId $tenantId  -Scopes "Calendars.Read"
+
 # Get access token
 Write-Host "Getting access token..." -ForegroundColor Cyan
 $tokenResponse = Get-AzAccessToken -ResourceUrl "https://graph.microsoft.com"
-$token = $tokenResponse.Token | ConvertFrom-SecureString -AsPlainTex
+$token = $tokenResponse.Token | ConvertFrom-SecureString -AsPlainText
 
 Write-Host "Token length: $($token.Length)" -ForegroundColor Gray
 Write-Host "Token starts with: $($token.Substring(0, 50))..." -ForegroundColor Gray
@@ -34,8 +40,9 @@ catch {
 # Test 2: Get my own calendar events
 Write-Host "`n=== Test 2: Get my calendar events ===" -ForegroundColor Yellow
 try {
-    $today = (Get-Date).ToString("yyyy-MM-dd")
-    $events = Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${today}T00:00:00Z&endDateTime=${today}T23:59:59Z" -Headers $headers
+    $startDate = (Get-Date).Date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    $endDate = (Get-Date).Date.AddDays(1).AddSeconds(-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    $events = Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=$startDate&endDateTime=$endDate" -Headers $headers
     Write-Host "Success! Found $($events.value.Count) events today" -ForegroundColor Green
 }
 catch {
