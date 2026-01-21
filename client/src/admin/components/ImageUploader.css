@@ -1,82 +1,115 @@
+/* Modern Image Uploader */
 .image-uploader {
-  border: 3px dashed #cbd5e0;
-  border-radius: 16px;
-  padding: 40px;
+  border: 3px dashed var(--border-color, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 48px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
-  background: #f7fafc;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.image-uploader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .image-uploader:hover {
-  border-color: #667eea;
-  background: #f0f4ff;
+  border-color: #6366f1;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+}
+
+.image-uploader:hover::before {
+  opacity: 1;
 }
 
 .image-uploader.drag-over {
-  border-color: #48bb78;
-  background: #f0fff4;
-  transform: scale(1.01);
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
 }
 
 .image-uploader.has-preview {
   padding: 0;
   border-style: solid;
-  border-color: #e2e8f0;
+  border-color: var(--border-color, #e2e8f0);
+  border-width: 2px;
+}
+
+.image-uploader.has-preview:hover {
+  border-color: #6366f1;
 }
 
 .upload-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .upload-icon {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 8px;
+  filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
 }
 
 .upload-placeholder h3 {
   margin: 0;
-  color: #2d3748;
-  font-size: 1.25rem;
+  color: #0f172a;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .upload-placeholder p {
   margin: 0;
-  color: #718096;
+  color: #64748b;
+  font-size: 0.95rem;
 }
 
 .formats {
   font-size: 0.8rem;
-  color: #a0aec0;
+  color: #94a3b8;
   margin-top: 8px;
+  padding: 6px 14px;
+  background: rgba(99, 102, 241, 0.08);
+  border-radius: 20px;
 }
 
 .preview-container {
   position: relative;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
 }
 
 .preview-image {
   display: block;
   width: 100%;
-  max-height: 200px;
+  max-height: 220px;
   object-fit: contain;
-  background: #edf2f7;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
 .preview-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(139, 92, 246, 0.85) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(4px);
 }
 
 .preview-container:hover .preview-overlay {
@@ -85,8 +118,11 @@
 
 .preview-overlay span {
   color: white;
-  font-weight: 600;
-  padding: 8px 16px;
+  font-weight: 700;
+  padding: 12px 24px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
+  border-radius: 30px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  letter-spacing: -0.01em;
 }
