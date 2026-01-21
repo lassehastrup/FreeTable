@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchLocation, getZoneFloorPlanUrl } from '../services/api';
+import { fetchLocation, getZoneFloorPlanUrl, getFloorPlanUrlById } from '../services/api';
 import { Location, Table, Zone } from '../types';
 import { FloorPlanView } from '../components/FloorPlanView';
 import { ImageFloorPlan } from '../components/ImageFloorPlan';
@@ -14,7 +14,8 @@ export const LocationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [viewMode, setViewMode] = useState<'floor' | 'grid'>('floor');
-  const [activeZoneIndex, setActiveZoneIndex] = useState(0);
+  // null means showing overview, number means showing specific zone
+  const [activeZoneIndex, setActiveZoneIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const loadLocation = async () => {
@@ -24,6 +25,10 @@ export const LocationPage: React.FC = () => {
         const data = await fetchLocation(locationId);
         if (data) {
           setLocation(data);
+          // If no overview image or only 1 zone, go directly to zone view
+          if (!data.overviewImage || data.zones.length <= 1) {
+            setActiveZoneIndex(0);
+          }
         } else {
           setError('Location not found');
         }
@@ -40,6 +45,14 @@ export const LocationPage: React.FC = () => {
 
   const handleTableClick = (table: Table) => {
     setSelectedTable(table);
+  };
+
+  const handleZoneClick = (index: number) => {
+    setActiveZoneIndex(index);
+  };
+
+  const handleBackToOverview = () => {
+    setActiveZoneIndex(null);
   };
 
   const closeModal = () => {
@@ -69,63 +82,97 @@ export const LocationPage: React.FC = () => {
     );
   }
 
-  // Get zones and active zone
+  // Get zones and check for overview
   const zones = location.zones || [];
-  const activeZone: Zone | null = zones[activeZoneIndex] || zones[0] || null;
+  const hasOverview = !!location.overviewImage && zones.length > 1;
+  const isShowingOverview = hasOverview && activeZoneIndex === null;
+  const activeZone: Zone | null = activeZoneIndex !== null ? (zones[activeZoneIndex] || null) : null;
   const hasMultipleZones = zones.length > 1;
+  const zoneLabel = location.zoneLabel === 'floor' ? 'Floor' : 'Zone';
 
-  // Get tables from active zone (or all tables for legacy format)
-  const currentTables = activeZone?.tables || location.tables || [];
-  const availableCount = currentTables.filter(t => t.isAvailable).length;
+  // Get all tables for total count
+  const allTables = zones.flatMap(z => z.tables);
+  const totalAvailable = allTables.filter(t => t.isAvailable).length;
+
+  // Get tables from active zone
+  const currentTables = activeZone?.tables || [];
+  const zoneAvailableCount = currentTables.filter(t => t.isAvailable).length;
   
-  // Determine if we have an image-based floor plan for this zone
-  const floorPlanImageUrl = activeZone 
+  // Determine floor plan URLs
+  const overviewImageUrl = location.overviewImage 
+    ? getFloorPlanUrlById(location.id, location.overviewImage)
+    : null;
+  const zoneFloorPlanUrl = activeZone 
     ? getZoneFloorPlanUrl(location.id, activeZone)
     : null;
 
   return (
     <div className="location-page">
       <header className="location-header">
-        <Link to="/" className="back-link">← Back to locations</Link>
+        {isShowingOverview ? (
+          <Link to="/" className="back-link">← Back to locations</Link>
+        ) : hasOverview ? (
+          <button className="back-link" onClick={handleBackToOverview}>← Back to overview</button>
+        ) : (
+          <Link to="/" className="back-link">← Back to locations</Link>
+        )}
         <div className="header-content">
           <div className="header-info">
-            <h1>{location.name}</h1>
+            <h1>{location.name}{activeZone && ` - ${activeZone.name}`}</h1>
             <p className="availability-summary">
-              <span className="highlight">{availableCount}</span> of {currentTables.length} desks available
-              {hasMultipleZones && activeZone && <span className="zone-indicator"> in {activeZone.name}</span>}
+              {isShowingOverview ? (
+                <>
+                  <span className="highlight">{totalAvailable}</span> of {allTables.length} desks available
+                  <span className="zone-indicator"> across {zones.length} {zoneLabel.toLowerCase()}s</span>
+                </>
+              ) : (
+                <>
+                  <span className="highlight">{zoneAvailableCount}</span> of {currentTables.length} desks available
+                </>
+              )}
             </p>
           </div>
-          <div className="view-toggle">
-            <button 
-              className={viewMode === 'floor' ? 'active' : ''} 
-              onClick={() => setViewMode('floor')}
-            >
-              Floor Plan
-            </button>
-            <button 
-              className={viewMode === 'grid' ? 'active' : ''} 
-              onClick={() => setViewMode('grid')}
-            >
-              Grid View
-            </button>
-          </div>
+          {!isShowingOverview && (
+            <div className="view-toggle">
+              <button 
+                className={viewMode === 'floor' ? 'active' : ''} 
+                onClick={() => setViewMode('floor')}
+              >
+                Floor Plan
+              </button>
+              <button 
+                className={viewMode === 'grid' ? 'active' : ''} 
+                onClick={() => setViewMode('grid')}
+              >
+                Grid View
+              </button>
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Zone/Floor tabs - only show if multiple zones */}
-      {hasMultipleZones && (
+      {/* Zone/Floor tabs - show if multiple zones and NOT showing overview */}
+      {hasMultipleZones && !isShowingOverview && (
         <div className="zone-switcher">
+          {hasOverview && (
+            <button
+              className="zone-btn overview-btn"
+              onClick={handleBackToOverview}
+            >
+              <span className="zone-name">🏢 Overview</span>
+            </button>
+          )}
           {zones.map((zone, index) => {
-            const zoneAvailable = zone.tables.filter(t => t.isAvailable).length;
+            const zoneAvail = zone.tables.filter(t => t.isAvailable).length;
             return (
               <button
                 key={zone.id}
                 className={`zone-btn ${activeZoneIndex === index ? 'active' : ''}`}
-                onClick={() => setActiveZoneIndex(index)}
+                onClick={() => handleZoneClick(index)}
               >
                 <span className="zone-name">{zone.name}</span>
                 <span className="zone-availability">
-                  {zoneAvailable}/{zone.tables.length}
+                  {zoneAvail}/{zone.tables.length}
                 </span>
               </button>
             );
@@ -134,10 +181,58 @@ export const LocationPage: React.FC = () => {
       )}
 
       <main className="location-content">
-        {viewMode === 'floor' ? (
-          floorPlanImageUrl ? (
+        {/* Overview mode - show building overview with clickable zones */}
+        {isShowingOverview && overviewImageUrl ? (
+          <div className="overview-container">
+            <div className="overview-image-wrapper">
+              <img src={overviewImageUrl} alt={`${location.name} overview`} className="overview-image" />
+              {/* Zone markers on overview */}
+              {zones.map((zone, index) => {
+                if (!zone.position) return null;
+                const zoneAvail = zone.tables.filter(t => t.isAvailable).length;
+                const zoneTotal = zone.tables.length;
+                const availPercent = zoneTotal > 0 ? Math.round((zoneAvail / zoneTotal) * 100) : 0;
+                return (
+                  <button
+                    key={zone.id}
+                    className="overview-zone-marker"
+                    style={{
+                      left: `${zone.position.x}%`,
+                      top: `${zone.position.y}%`,
+                    }}
+                    onClick={() => handleZoneClick(index)}
+                  >
+                    <span className="zone-marker-name">{zone.name}</span>
+                    <span className={`zone-marker-stats ${availPercent > 50 ? 'good' : availPercent > 0 ? 'some' : 'none'}`}>
+                      {zoneAvail}/{zoneTotal} available
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {/* Zone list below overview */}
+            <div className="overview-zone-list">
+              {zones.map((zone, index) => {
+                const zoneAvail = zone.tables.filter(t => t.isAvailable).length;
+                return (
+                  <button
+                    key={zone.id}
+                    className="overview-zone-card"
+                    onClick={() => handleZoneClick(index)}
+                  >
+                    <span className="zone-card-name">{zone.name}</span>
+                    <span className="zone-card-stats">
+                      <span className="highlight">{zoneAvail}</span> / {zone.tables.length} available
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : viewMode === 'floor' ? (
+          zoneFloorPlanUrl ? (
             <ImageFloorPlan 
-              floorPlanImageUrl={floorPlanImageUrl}
+              floorPlanImageUrl={zoneFloorPlanUrl}
               tables={currentTables}
               onTableClick={handleTableClick}
             />

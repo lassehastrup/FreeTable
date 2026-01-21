@@ -32,6 +32,11 @@ export interface Zone {
   id: string;
   name: string;
   floorPlanImage: string;
+  /** Position on overview map as percentage (0-100) */
+  position?: {
+    x: number;
+    y: number;
+  };
   tables: Table[];
 }
 
@@ -41,6 +46,8 @@ export interface Location {
   description?: string;
   /** Label for zones - 'zone' or 'floor'. Defaults to 'zone' */
   zoneLabel?: 'zone' | 'floor';
+  /** Overview/building floor plan image (optional - for multi-zone navigation) */
+  overviewImage?: string;
   /** Multiple zones/floors in this location */
   zones: Zone[];
   

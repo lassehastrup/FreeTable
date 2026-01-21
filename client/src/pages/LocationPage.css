@@ -12,6 +12,12 @@
   font-weight: 500;
   margin-bottom: 16px;
   transition: color 0.2s;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .back-link:hover {
@@ -108,6 +114,128 @@
 .zone-btn.active .zone-availability {
   background: rgba(255, 255, 255, 0.2);
   color: white;
+}
+
+.zone-btn.overview-btn {
+  background: #f7fafc;
+  border-style: dashed;
+}
+
+.zone-btn.overview-btn:hover {
+  background: #edf2f7;
+}
+
+/* Overview Mode */
+.overview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.overview-image-wrapper {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.overview-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.overview-zone-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 20px;
+  background: white;
+  border: 3px solid #667eea;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.overview-zone-marker:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+  border-color: #764ba2;
+}
+
+.zone-marker-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+.zone-marker-stats {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.zone-marker-stats.good {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.zone-marker-stats.some {
+  background: #fefcbf;
+  color: #744210;
+}
+
+.zone-marker-stats.none {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.overview-zone-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.overview-zone-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.overview-zone-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.zone-card-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.zone-card-stats {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.zone-card-stats .highlight {
+  color: #48bb78;
+  font-weight: 700;
 }
 
 .view-toggle {

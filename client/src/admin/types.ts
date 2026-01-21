@@ -18,6 +18,11 @@ export interface Zone {
   name: string;
   /** Filename of the floor plan image for this zone */
   floorPlanImage: string;
+  /** Position on overview map as percentage (0-100) */
+  position?: {
+    x: number;
+    y: number;
+  };
   tables: TableMarker[];
 }
 
@@ -27,6 +32,8 @@ export interface LocationConfig {
   description?: string;
   /** Label for zones - 'zone' or 'floor'. Defaults to 'zone' */
   zoneLabel?: 'zone' | 'floor';
+  /** Overview/building floor plan image (optional - for multi-zone navigation) */
+  overviewImage?: string;
   /** Multiple zones/floors in this location */
   zones: Zone[];
   

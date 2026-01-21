@@ -472,3 +472,314 @@
 .btn-secondary:hover {
   background: #e2e8f0;
 }
+
+/* Overview Step */
+.overview-step {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.overview-step h2 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.step-description {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.overview-uploader {
+  margin-bottom: 32px;
+}
+
+.overview-mapper h3 {
+  margin-bottom: 8px;
+  color: #2d3748;
+}
+
+.mapper-instructions {
+  color: #718096;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.overview-image-container {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: crosshair;
+  margin-bottom: 24px;
+}
+
+.overview-mapper-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.zone-position-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: white;
+  border: 3px solid #667eea;
+  border-radius: 8px;
+  cursor: grab;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s;
+  z-index: 10;
+}
+
+.zone-position-marker:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.zone-position-marker.dragging {
+  opacity: 0.7;
+  cursor: grabbing;
+  border-color: #764ba2;
+}
+
+.marker-name {
+  font-weight: 600;
+  color: #2d3748;
+  white-space: nowrap;
+}
+
+.marker-remove {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.marker-remove:hover {
+  background: #c53030;
+}
+
+.zone-positions-list {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.zone-positions-list h4 {
+  margin: 0 0 12px 0;
+  color: #2d3748;
+}
+
+.zone-position-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.zone-position-item:last-child {
+  border-bottom: none;
+}
+
+.zone-position-item.placed .position-status {
+  color: #48bb78;
+  font-weight: 600;
+}
+
+.zone-position-item.not-placed .position-status {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* Zone item actions */
+.zone-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.zone-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.zone-action-btn:hover {
+  background: #edf2f7;
+}
+
+.zone-action-btn.danger:hover {
+  background: #fed7d7;
+}
+
+.no-zones-message {
+  color: #a0aec0;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Marker edit form */
+.marker-edit-form {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.marker-edit-form input {
+  padding: 6px 10px;
+  border: 2px solid #667eea;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.marker-edit-form input:focus {
+  outline: none;
+  border-color: #764ba2;
+}
+
+.marker-save,
+.marker-cancel {
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.marker-save {
+  background: #48bb78;
+  color: white;
+}
+
+.marker-save:hover {
+  background: #38a169;
+}
+
+.marker-save:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.marker-cancel {
+  background: #e53e3e;
+  color: white;
+}
+
+.marker-cancel:hover {
+  background: #c53030;
+}
+
+.zone-position-marker.new-marker {
+  border-style: dashed;
+  background: #f7fafc;
+}
+
+.zone-position-marker.editing {
+  border-color: #764ba2;
+}
+
+/* Overview label toggle */
+.overview-label-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #f7fafc;
+  border-radius: 8px;
+}
+
+.overview-label-toggle span {
+  font-weight: 500;
+  color: #4a5568;
+}
+
+/* Zone tabs inline for upload/map steps */
+.zone-tabs-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.zone-tabs-inline > span {
+  font-weight: 600;
+  color: #4a5568;
+  margin-right: 8px;
+}
+
+.zone-tab-btn {
+  padding: 8px 16px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.zone-tab-btn:hover {
+  border-color: #667eea;
+}
+
+.zone-tab-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.zone-tab-btn .check {
+  color: #48bb78;
+}
+
+.zone-tab-btn.active .check {
+  color: #9ae6b4;
+}
+
+.zone-tab-btn .count {
+  background: rgba(102, 126, 234, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.zone-tab-btn.active .count {
+  background: rgba(255, 255, 255, 0.3);
+}

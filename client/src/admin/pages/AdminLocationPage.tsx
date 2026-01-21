@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TableMapper } from '../components/TableMapper';
 import { ImageUploader } from '../components/ImageUploader';
@@ -9,13 +9,19 @@ import './AdminLocationPage.css';
 export const AdminLocationPage: React.FC = () => {
   const { locationId } = useParams<{ locationId: string }>();
   const isNewLocation = locationId === 'new';
-  const [step, setStep] = useState<'upload' | 'map' | 'export'>('upload');
+  const [step, setStep] = useState<'upload' | 'map' | 'overview' | 'export'>('overview');
   const [locationName, setLocationName] = useState(isNewLocation ? 'New Location' : locationId || '');
   const [zoneLabel, setZoneLabel] = useState<'zone' | 'floor'>('zone');
-  const [zones, setZones] = useState<Zone[]>([{ id: 'main', name: 'Main', floorPlanImage: '', tables: [] }]);
+  const [zones, setZones] = useState<Zone[]>([]);
   const [activeZoneIndex, setActiveZoneIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(!isNewLocation);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [overviewImage, setOverviewImage] = useState<string>('');
+  const overviewRef = useRef<HTMLDivElement>(null);
+  const [draggingZoneId, setDraggingZoneId] = useState<string | null>(null);
+  const [editingZoneId, setEditingZoneId] = useState<string | null>(null);
+  const [pendingZonePosition, setPendingZonePosition] = useState<{ x: number; y: number } | null>(null);
+  const [newZoneName, setNewZoneName] = useState('');
 
   // Get active zone
   const activeZone = zones[activeZoneIndex] || zones[0];
@@ -36,6 +42,11 @@ export const AdminLocationPage: React.FC = () => {
         if (config) {
           setLocationName(config.name);
           setZoneLabel(config.zoneLabel || 'zone');
+          
+          // Load overview image if present
+          if (config.overviewImage) {
+            setOverviewImage(getFloorPlanUrlById(locationId, config.overviewImage));
+          }
           
           // Load zones with floor plan URLs
           const loadedZones = config.zones.map(zone => ({
@@ -65,12 +76,6 @@ export const AdminLocationPage: React.FC = () => {
     ));
   };
 
-  const handleProceedToMapping = () => {
-    if (activeZone.floorPlanImage) {
-      setStep('map');
-    }
-  };
-
   const handleMarkersChange = (newMarkers: TableMarker[]) => {
     // Update the active zone's tables
     setZones(prev => prev.map((z, i) => 
@@ -82,39 +87,90 @@ export const AdminLocationPage: React.FC = () => {
     setStep('export');
   };
 
-  const addZone = () => {
-    const newZoneNum = zones.length + 1;
-    const label = zoneLabel === 'floor' ? 'Floor' : 'Zone';
-    const newZone: Zone = {
-      id: `${zoneLabel}-${newZoneNum}`,
-      name: `${label} ${newZoneNum}`,
-      floorPlanImage: '',
-      tables: [],
-    };
-    setZones([...zones, newZone]);
-    setActiveZoneIndex(zones.length);
-    setStep('upload'); // Go back to upload for new zone
-  };
-
-  const deleteZone = (index: number) => {
-    if (zones.length <= 1) return; // Keep at least one zone
-    const newZones = zones.filter((_, i) => i !== index);
-    setZones(newZones);
-    if (activeZoneIndex >= newZones.length) {
-      setActiveZoneIndex(newZones.length - 1);
-    }
-  };
-
-  const renameZone = (index: number, newName: string) => {
-    setZones(prev => prev.map((z, i) => 
-      i === index ? { ...z, name: newName } : z
-    ));
-  };
-
   const getZoneLabelText = (plural = false) => {
     if (zoneLabel === 'floor') return plural ? 'Floors' : 'Floor';
     return plural ? 'Zones' : 'Zone';
   };
+
+  const handleOverviewImageSelect = (imageDataUrl: string) => {
+    setOverviewImage(imageDataUrl);
+  };
+
+  // Handle clicking on overview to add new zone markers
+  const handleOverviewClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!overviewRef.current) return;
+    
+    const rect = overviewRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    // If dragging, update position of dragged zone
+    if (draggingZoneId) {
+      setZones(prev => prev.map(z => 
+        z.id === draggingZoneId 
+          ? { ...z, position: { x, y } }
+          : z
+      ));
+      setDraggingZoneId(null);
+      return;
+    }
+    
+    // Show input for new zone name
+    setPendingZonePosition({ x, y });
+    setNewZoneName('');
+    setEditingZoneId(null);
+  };
+
+  const handleAddZoneFromOverview = () => {
+    if (!pendingZonePosition || !newZoneName.trim()) return;
+    
+    const newZoneId = `zone-${Date.now()}`;
+    const newZone: Zone = {
+      id: newZoneId,
+      name: newZoneName.trim(),
+      floorPlanImage: '',
+      tables: [],
+      position: pendingZonePosition,
+    };
+    
+    setZones(prev => [...prev, newZone]);
+    setPendingZonePosition(null);
+    setNewZoneName('');
+  };
+
+  const handleCancelNewZone = () => {
+    setPendingZonePosition(null);
+    setNewZoneName('');
+  };
+
+  const handleZoneMarkerDragStart = (zoneId: string) => {
+    setDraggingZoneId(zoneId);
+  };
+
+  const removeZoneFromOverview = (zoneId: string) => {
+    setZones(prev => prev.filter(z => z.id !== zoneId));
+  };
+
+  const startEditingZoneName = (zoneId: string) => {
+    const zone = zones.find(z => z.id === zoneId);
+    if (zone) {
+      setEditingZoneId(zoneId);
+      setNewZoneName(zone.name);
+    }
+  };
+
+  const saveZoneName = () => {
+    if (editingZoneId && newZoneName.trim()) {
+      setZones(prev => prev.map(z => 
+        z.id === editingZoneId ? { ...z, name: newZoneName.trim() } : z
+      ));
+    }
+    setEditingZoneId(null);
+    setNewZoneName('');
+  };
+
+  // Get zones that have been placed on overview (have position)
+  const overviewZones = zones.filter(z => z.position);
 
   const generateConfig = (): LocationConfig => {
     // Generate export config with proper file names for each zone
@@ -128,6 +184,7 @@ export const AdminLocationPage: React.FC = () => {
         name: zone.name,
         floorPlanImage: filename,
         tables: zone.tables,
+        position: zone.position,
       };
     });
 
@@ -135,6 +192,7 @@ export const AdminLocationPage: React.FC = () => {
       id: locationId === 'new' ? locationName.toLowerCase().replace(/\s+/g, '-') : locationId || 'new-location',
       name: locationName,
       zoneLabel: zones.length > 1 ? zoneLabel : undefined,
+      overviewImage: overviewImage && zones.length > 1 ? 'overview.png' : undefined,
       zones: exportZones,
     };
   };
@@ -174,7 +232,18 @@ export const AdminLocationPage: React.FC = () => {
     }
   };
 
+  const downloadOverviewImage = () => {
+    if (!overviewImage || !overviewImage.startsWith('data:')) return;
+    const a = document.createElement('a');
+    a.href = overviewImage;
+    a.download = 'overview.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const hasNewFloorPlans = zones.some(z => z.floorPlanImage?.startsWith('data:'));
+  const hasNewOverviewImage = overviewImage?.startsWith('data:');
   const totalTables = zones.reduce((sum, z) => sum + z.tables.length, 0);
 
   // Show loading state
@@ -215,111 +284,59 @@ export const AdminLocationPage: React.FC = () => {
       </header>
 
       {/* Edit mode quick actions */}
-      {!isNewLocation && step === 'upload' && (
+      {!isNewLocation && step === 'overview' && (
         <div className="edit-mode-banner">
           <span>📝 Editing existing location</span>
           <button 
             className="btn-secondary small"
             onClick={() => setStep('map')}
-            disabled={!activeZone.floorPlanImage}
+            disabled={!activeZone?.floorPlanImage}
           >
             Skip to Table Editing →
           </button>
         </div>
       )}
 
-      {/* Zone Tabs - show if more than 1 zone or in edit mode */}
-      {(zones.length > 1 || step === 'upload') && (
-        <div className="zone-tabs">
-          <div className="zone-tabs-header">
-            <span className="zone-label">{getZoneLabelText(true)}:</span>
-            {step === 'upload' && (
-              <div className="zone-label-toggle">
-                <button 
-                  className={`label-btn ${zoneLabel === 'zone' ? 'active' : ''}`}
-                  onClick={() => setZoneLabel('zone')}
-                >
-                  Zones
-                </button>
-                <button 
-                  className={`label-btn ${zoneLabel === 'floor' ? 'active' : ''}`}
-                  onClick={() => setZoneLabel('floor')}
-                >
-                  Floors
-                </button>
-              </div>
-            )}
-          </div>
-          <div className="zone-tabs-list">
-            {zones.map((zone, index) => (
-              <button
-                key={zone.id}
-                className={`zone-tab ${activeZoneIndex === index ? 'active' : ''}`}
-                onClick={() => setActiveZoneIndex(index)}
-              >
-                {zone.name}
-                {zone.tables.length > 0 && <span className="zone-table-count">{zone.tables.length}</span>}
-              </button>
-            ))}
-            {step === 'upload' && (
-              <button className="zone-tab add-zone" onClick={addZone}>
-                + Add {getZoneLabelText()}
-              </button>
-            )}
-          </div>
-          {step === 'upload' && zones.length > 1 && (
-            <div className="zone-actions">
-              <button 
-                className="btn-small"
-                onClick={() => {
-                  const newName = prompt(`Rename ${getZoneLabelText()}:`, activeZone.name);
-                  if (newName) renameZone(activeZoneIndex, newName);
-                }}
-              >
-                ✏️ Rename
-              </button>
-              <button 
-                className="btn-small btn-danger"
-                onClick={() => {
-                  if (confirm(`Delete ${activeZone.name}? This cannot be undone.`)) {
-                    deleteZone(activeZoneIndex);
-                  }
-                }}
-              >
-                🗑️ Delete
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Progress Steps */}
       <div className="admin-steps">
         <div 
-          className={`step ${step === 'upload' ? 'active' : ''} ${activeZone.floorPlanImage ? 'completed' : ''}`}
-          onClick={() => setStep('upload')}
+          className={`step ${step === 'overview' ? 'active' : ''} ${overviewImage && overviewZones.length > 0 ? 'completed' : ''}`}
+          onClick={() => setStep('overview')}
           style={{ cursor: 'pointer' }}
         >
           <span className="step-number">1</span>
-          <span className="step-label">{isNewLocation ? 'Upload' : 'Change'} Floor Plan</span>
+          <span className="step-label">Building Overview</span>
         </div>
         <div 
-          className={`step ${step === 'map' ? 'active' : ''} ${activeZone.tables.length > 0 ? 'completed' : ''}`}
-          onClick={() => activeZone.floorPlanImage && setStep('map')}
-          style={{ cursor: activeZone.floorPlanImage ? 'pointer' : 'not-allowed' }}
+          className={`step ${step === 'upload' ? 'active' : ''} ${activeZone?.floorPlanImage ? 'completed' : ''}`}
+          onClick={() => overviewZones.length > 0 && setStep('upload')}
+          style={{ cursor: overviewZones.length > 0 ? 'pointer' : 'not-allowed' }}
         >
           <span className="step-number">2</span>
+          <span className="step-label">{getZoneLabelText()} Floor Plans</span>
+        </div>
+        <div 
+          className={`step ${step === 'map' ? 'active' : ''} ${activeZone?.tables.length > 0 ? 'completed' : ''}`}
+          onClick={() => activeZone?.floorPlanImage && setStep('map')}
+          style={{ cursor: activeZone?.floorPlanImage ? 'pointer' : 'not-allowed' }}
+        >
+          <span className="step-number">3</span>
           <span className="step-label">Place Tables</span>
         </div>
-        <div className={`step ${step === 'export' ? 'active' : ''}`}>
-          <span className="step-number">3</span>
+        <div 
+          className={`step ${step === 'export' ? 'active' : ''}`}
+          onClick={() => totalTables > 0 && setStep('export')}
+          style={{ cursor: totalTables > 0 ? 'pointer' : 'not-allowed' }}
+        >
+          <span className="step-number">4</span>
           <span className="step-label">Export Config</span>
         </div>
       </div>
 
       <main className="admin-content">
-        {step === 'upload' && (
-          <div className="step-content upload-step">
+        {/* Step 1: Overview - Define zones on building map */}
+        {step === 'overview' && (
+          <div className="step-content overview-step">
             <div className="form-section">
               <label>Location Name</label>
               <input
@@ -331,34 +348,244 @@ export const AdminLocationPage: React.FC = () => {
               />
             </div>
 
-            {zones.length > 1 && (
-              <div className="current-zone-info">
-                Uploading floor plan for: <strong>{activeZone.name}</strong>
+            <h2>🏢 Building Overview</h2>
+            <p className="step-description">
+              Upload a building overview image and click on it to add {getZoneLabelText(true).toLowerCase()}. 
+              This creates a navigable map where users can click on {getZoneLabelText(true).toLowerCase()} to explore.
+            </p>
+            
+            <div className="overview-uploader">
+              <ImageUploader 
+                currentImage={overviewImage || undefined}
+                onImageSelect={handleOverviewImageSelect}
+              />
+            </div>
+
+            {overviewImage && (
+              <div className="overview-mapper">
+                <h3>Add {getZoneLabelText(true)} to the Overview</h3>
+                <p className="mapper-instructions">
+                  Click on the image to add a {getZoneLabelText().toLowerCase()} marker. 
+                  Enter a name for each {getZoneLabelText().toLowerCase()}, then drag markers to reposition if needed.
+                </p>
+
+                <div className="zone-label-toggle overview-label-toggle">
+                  <span>Label as:</span>
+                  <button 
+                    className={`label-btn ${zoneLabel === 'zone' ? 'active' : ''}`}
+                    onClick={() => setZoneLabel('zone')}
+                  >
+                    Zones
+                  </button>
+                  <button 
+                    className={`label-btn ${zoneLabel === 'floor' ? 'active' : ''}`}
+                    onClick={() => setZoneLabel('floor')}
+                  >
+                    Floors
+                  </button>
+                </div>
+                
+                <div 
+                  ref={overviewRef}
+                  className="overview-image-container"
+                  onClick={handleOverviewClick}
+                >
+                  <img src={overviewImage} alt="Building Overview" className="overview-mapper-image" />
+                  
+                  {/* Existing zone markers */}
+                  {overviewZones.map((zone) => (
+                    <div
+                      key={zone.id}
+                      className={`zone-position-marker ${draggingZoneId === zone.id ? 'dragging' : ''} ${editingZoneId === zone.id ? 'editing' : ''}`}
+                      style={{
+                        left: `${zone.position!.x}%`,
+                        top: `${zone.position!.y}%`,
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      onMouseDown={(e) => {
+                        if (editingZoneId !== zone.id) {
+                          e.preventDefault();
+                          handleZoneMarkerDragStart(zone.id);
+                        }
+                      }}
+                    >
+                      {editingZoneId === zone.id ? (
+                        <div className="marker-edit-form">
+                          <input
+                            type="text"
+                            value={newZoneName}
+                            onChange={(e) => setNewZoneName(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') saveZoneName();
+                              if (e.key === 'Escape') { setEditingZoneId(null); setNewZoneName(''); }
+                            }}
+                            autoFocus
+                            placeholder={`${getZoneLabelText()} name`}
+                          />
+                          <button className="marker-save" onClick={saveZoneName}>✓</button>
+                        </div>
+                      ) : (
+                        <>
+                          <span 
+                            className="marker-name" 
+                            onDoubleClick={() => startEditingZoneName(zone.id)}
+                            title="Double-click to rename"
+                          >
+                            {zone.name}
+                          </span>
+                          <button 
+                            className="marker-remove"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeZoneFromOverview(zone.id);
+                            }}
+                          >×</button>
+                        </>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Pending new zone marker */}
+                  {pendingZonePosition && (
+                    <div
+                      className="zone-position-marker new-marker"
+                      style={{
+                        left: `${pendingZonePosition.x}%`,
+                        top: `${pendingZonePosition.y}%`,
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="marker-edit-form">
+                        <input
+                          type="text"
+                          value={newZoneName}
+                          onChange={(e) => setNewZoneName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleAddZoneFromOverview();
+                            if (e.key === 'Escape') handleCancelNewZone();
+                          }}
+                          autoFocus
+                          placeholder={`${getZoneLabelText()} name (e.g., ${zoneLabel === 'floor' ? 'Floor 1' : 'North Wing'})`}
+                        />
+                        <button className="marker-save" onClick={handleAddZoneFromOverview} disabled={!newZoneName.trim()}>✓</button>
+                        <button className="marker-cancel" onClick={handleCancelNewZone}>×</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="zone-positions-list">
+                  <h4>{getZoneLabelText(true)} Added ({overviewZones.length}):</h4>
+                  {overviewZones.length === 0 ? (
+                    <p className="no-zones-message">Click on the image above to add {getZoneLabelText(true).toLowerCase()}</p>
+                  ) : (
+                    overviewZones.map((zone) => (
+                      <div key={zone.id} className="zone-position-item placed">
+                        <span>{zone.name}</span>
+                        <div className="zone-item-actions">
+                          <button 
+                            className="zone-action-btn"
+                            onClick={() => startEditingZoneName(zone.id)}
+                            title="Rename"
+                          >✏️</button>
+                          <button 
+                            className="zone-action-btn danger"
+                            onClick={() => removeZoneFromOverview(zone.id)}
+                            title="Remove"
+                          >🗑️</button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             )}
 
-            <ImageUploader 
-              currentImage={activeZone.floorPlanImage || undefined}
-              onImageSelect={handleImageSelect}
-            />
-
-            <button 
-              className="btn-primary large"
-              onClick={handleProceedToMapping}
-              disabled={!activeZone.floorPlanImage}
-            >
-              Continue to Table Mapping →
-            </button>
+            <div className="step-actions">
+              <button 
+                className="btn-primary"
+                onClick={() => {
+                  // Use overview zones for the next steps
+                  if (overviewZones.length > 0) {
+                    setZones(overviewZones);
+                    setActiveZoneIndex(0);
+                  }
+                  setStep('upload');
+                }}
+                disabled={overviewZones.length === 0}
+              >
+                Configure {getZoneLabelText()} Floor Plans ({overviewZones.length}) →
+              </button>
+            </div>
           </div>
         )}
 
-        {step === 'map' && activeZone.floorPlanImage && (
-          <div className="step-content map-step">
+        {/* Step 2: Upload floor plans for each zone */}
+        {step === 'upload' && (
+          <div className="step-content upload-step">
             {zones.length > 1 && (
-              <div className="current-zone-info map-zone-info">
-                Editing: <strong>{activeZone.name}</strong>
+              <div className="zone-tabs-inline">
+                <span>Select {getZoneLabelText()}:</span>
+                {zones.map((zone, index) => (
+                  <button
+                    key={zone.id}
+                    className={`zone-tab-btn ${activeZoneIndex === index ? 'active' : ''} ${zone.floorPlanImage ? 'has-image' : ''}`}
+                    onClick={() => setActiveZoneIndex(index)}
+                  >
+                    {zone.name}
+                    {zone.floorPlanImage && <span className="check">✓</span>}
+                  </button>
+                ))}
               </div>
             )}
+
+            <div className="current-zone-info">
+              Upload floor plan for: <strong>{activeZone?.name || 'Zone'}</strong>
+            </div>
+
+            <ImageUploader 
+              currentImage={activeZone?.floorPlanImage || undefined}
+              onImageSelect={handleImageSelect}
+            />
+
+            <div className="step-actions">
+              <button className="btn-secondary" onClick={() => setStep('overview')}>
+                ← Back to Overview
+              </button>
+              <button 
+                className="btn-primary"
+                onClick={() => setStep('map')}
+                disabled={!activeZone?.floorPlanImage}
+              >
+                Place Tables on {activeZone?.name || 'Floor Plan'} →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Map tables on floor plan */}
+        {step === 'map' && activeZone?.floorPlanImage && (
+          <div className="step-content map-step">
+            {zones.length > 1 && (
+              <div className="zone-tabs-inline">
+                <span>Select {getZoneLabelText()}:</span>
+                {zones.map((zone, index) => (
+                  <button
+                    key={zone.id}
+                    className={`zone-tab-btn ${activeZoneIndex === index ? 'active' : ''} ${zone.tables.length > 0 ? 'has-tables' : ''}`}
+                    onClick={() => setActiveZoneIndex(index)}
+                  >
+                    {zone.name}
+                    {zone.tables.length > 0 && <span className="count">{zone.tables.length}</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="current-zone-info map-zone-info">
+              Placing tables on: <strong>{activeZone.name}</strong>
+            </div>
+            
             <TableMapper
               floorPlanUrl={activeZone.floorPlanImage}
               existingMarkers={activeZone.tables}
@@ -367,7 +594,7 @@ export const AdminLocationPage: React.FC = () => {
 
             <div className="step-actions">
               <button className="btn-secondary" onClick={() => setStep('upload')}>
-                ← Back
+                ← Back to Floor Plans
               </button>
               <button 
                 className="btn-primary"
@@ -394,6 +621,11 @@ export const AdminLocationPage: React.FC = () => {
               <button className="btn-primary" onClick={downloadConfig}>
                 📥 Download config.json
               </button>
+              {hasNewOverviewImage && (
+                <button className="btn-secondary" onClick={downloadOverviewImage}>
+                  📥 Download Overview Image
+                </button>
+              )}
               {hasNewFloorPlans && (
                 <div className="floorplan-downloads">
                   {zones.map((zone) => (
@@ -428,6 +660,9 @@ export const AdminLocationPage: React.FC = () => {
             <div className="export-instructions">
               <h3>Next Steps:</h3>
               <ol>
+                {hasNewOverviewImage && (
+                  <li>Save the overview image to <code>locations/{generateConfig().id}/overview.png</code></li>
+                )}
                 {zones.map((zone) => {
                   const filename = zones.length === 1 
                     ? 'floorplan.png' 
@@ -444,8 +679,8 @@ export const AdminLocationPage: React.FC = () => {
             </div>
 
             <div className="step-actions">
-              <button className="btn-secondary" onClick={() => setStep('map')}>
-                ← Back to Mapping
+              <button className="btn-secondary" onClick={() => zones.length > 1 ? setStep('overview') : setStep('map')}>
+                ← Back
               </button>
               <Link to="/" className="btn-primary">
                 View Live Dashboard →

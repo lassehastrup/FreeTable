@@ -1,26 +1,21 @@
 {
-  "id": "Aarhus",
+  "id": "aarhus",
   "name": "Aarhus",
   "zoneLabel": "zone",
+  "overviewImage": "AarhusOffice.drawio.svg",
   "zones": [
     {
-      "id": "main",
-      "name": "Main",
-      "floorPlanImage": "floorplan-main.png",
-      "tables": []
-    },
-    {
-      "id": "zone-2",
-      "name": "Floor 1",
-      "floorPlanImage": "floorplan-zone-2.png",
+      "id": "zone-1768997571876",
+      "name": "Zone 2",
+      "floorPlanImage": "aarhus-zone-2.svg",
       "tables": [
         {
           "id": "T1",
           "name": "Table 1",
           "assignedUser": null,
           "position": {
-            "x": 71.63865546218487,
-            "y": 22.388232690950087
+            "x": 8.245798319327731,
+            "y": 28.277499340543393
           }
         },
         {
@@ -28,8 +23,8 @@
           "name": "Table 2",
           "assignedUser": null,
           "position": {
-            "x": 72.89915966386555,
-            "y": 40.86526810456552
+            "x": 29.25420168067227,
+            "y": 29.33262991295173
           }
         },
         {
@@ -37,8 +32,8 @@
           "name": "Table 3",
           "assignedUser": null,
           "position": {
-            "x": 94.53781512605042,
-            "y": 24.14152802216907
+            "x": 8.771008403361344,
+            "y": 76.81350567132684
           }
         },
         {
@@ -46,11 +41,460 @@
           "name": "Table 4",
           "assignedUser": null,
           "position": {
-            "x": 92.96218487394958,
-            "y": 41.40474359109444
+            "x": 29.67436974789916,
+            "y": 75.54734898443682
+          }
+        },
+        {
+          "id": "T5",
+          "name": "Table 5",
+          "assignedUser": null,
+          "position": {
+            "x": 68.11974789915966,
+            "y": 30.59878659984173
+          }
+        },
+        {
+          "id": "T6",
+          "name": "Table 6",
+          "assignedUser": null,
+          "position": {
+            "x": 88.07773109243698,
+            "y": 29.754682141915062
+          }
+        },
+        {
+          "id": "T7",
+          "name": "Table 7",
+          "assignedUser": null,
+          "position": {
+            "x": 88.49789915966386,
+            "y": 73.85914006858349
+          }
+        },
+        {
+          "id": "T8",
+          "name": "Table 8",
+          "assignedUser": null,
+          "position": {
+            "x": 66.75420168067227,
+            "y": 70.06067000791349
           }
         }
-      ]
+      ],
+      "position": {
+        "x": 28.000000000000004,
+        "y": 53.7641105488517
+      }
+    },
+    {
+      "id": "zone-1768997615322",
+      "name": "Zone 1",
+      "floorPlanImage": "aarhus-zone-1.svg",
+      "tables": [
+        {
+          "id": "T1",
+          "name": "Table 1",
+          "assignedUser": null,
+          "position": {
+            "x": 8.403361344537815,
+            "y": 30.203066022815932
+          }
+        },
+        {
+          "id": "T2",
+          "name": "Table 2",
+          "assignedUser": null,
+          "position": {
+            "x": 21.008403361344538,
+            "y": 30.041119288109147
+          }
+        },
+        {
+          "id": "T3",
+          "name": "Table 3",
+          "assignedUser": null,
+          "position": {
+            "x": 35.50420168067227,
+            "y": 30.203066022815932
+          }
+        },
+        {
+          "id": "T4",
+          "name": "Table 4",
+          "assignedUser": null,
+          "position": {
+            "x": 7.773109243697479,
+            "y": 41.10747949307298
+          }
+        },
+        {
+          "id": "T5",
+          "name": "Table 5",
+          "assignedUser": null,
+          "position": {
+            "x": 19.642857142857142,
+            "y": 40.999515003268456
+          }
+        },
+        {
+          "id": "T6",
+          "name": "Table 6",
+          "assignedUser": null,
+          "position": {
+            "x": 35.50420168067227,
+            "y": 41.431372962486556
+          }
+        },
+        {
+          "id": "T7",
+          "name": "Table 7",
+          "assignedUser": null,
+          "position": {
+            "x": 6.4075630252100835,
+            "y": 49.798620922337264
+          }
+        },
+        {
+          "id": "T8",
+          "name": "Table 8",
+          "assignedUser": null,
+          "position": {
+            "x": 17.54201680672269,
+            "y": 50.28446112645762
+          }
+        },
+        {
+          "id": "T9",
+          "name": "Table 9",
+          "assignedUser": null,
+          "position": {
+            "x": 36.44957983193277,
+            "y": 50.01454990194632
+          }
+        },
+        {
+          "id": "T10",
+          "name": "Table 10",
+          "assignedUser": null,
+          "position": {
+            "x": 7.668067226890757,
+            "y": 59.407460514940006
+          }
+        },
+        {
+          "id": "T11",
+          "name": "Table 11",
+          "assignedUser": null,
+          "position": {
+            "x": 18.80252100840336,
+            "y": 58.65170908630834
+          }
+        },
+        {
+          "id": "T12",
+          "name": "Table 12",
+          "assignedUser": null,
+          "position": {
+            "x": 36.239495798319325,
+            "y": 58.81365582101512
+          }
+        },
+        {
+          "id": "T13",
+          "name": "Table 13",
+          "assignedUser": null,
+          "position": {
+            "x": 7.668067226890757,
+            "y": 68.36851316871561
+          }
+        },
+        {
+          "id": "T14",
+          "name": "Table 14",
+          "assignedUser": null,
+          "position": {
+            "x": 20.168067226890756,
+            "y": 68.28782779591252
+          }
+        },
+        {
+          "id": "T15",
+          "name": "Table 15",
+          "assignedUser": null,
+          "position": {
+            "x": 36.029411764705884,
+            "y": 68.66570510387409
+          }
+        },
+        {
+          "id": "T16",
+          "name": "Table 16",
+          "assignedUser": null,
+          "position": {
+            "x": 9.138655462184873,
+            "y": 77.03298835159458
+          }
+        },
+        {
+          "id": "T17",
+          "name": "Table 17",
+          "assignedUser": null,
+          "position": {
+            "x": 20.69327731092437,
+            "y": 76.4931636259352
+          }
+        },
+        {
+          "id": "T18",
+          "name": "Table 18",
+          "assignedUser": null,
+          "position": {
+            "x": 36.239495798319325,
+            "y": 76.38519868080333
+          }
+        },
+        {
+          "id": "T19",
+          "name": "Table 19",
+          "assignedUser": null,
+          "position": {
+            "x": 9.34873949579832,
+            "y": 84.21265720286445
+          }
+        },
+        {
+          "id": "T20",
+          "name": "Table 20",
+          "assignedUser": null,
+          "position": {
+            "x": 21.113445378151262,
+            "y": 83.83477989490288
+          }
+        },
+        {
+          "id": "T21",
+          "name": "Table 21",
+          "assignedUser": null,
+          "position": {
+            "x": 35.50420168067227,
+            "y": 84.26663967543038
+          }
+        },
+        {
+          "id": "T22",
+          "name": "Table 22",
+          "assignedUser": null,
+          "position": {
+            "x": 8.928571428571429,
+            "y": 92.95781775854653
+          }
+        },
+        {
+          "id": "T23",
+          "name": "Table 23",
+          "assignedUser": null,
+          "position": {
+            "x": 20.798319327731093,
+            "y": 93.0657827036784
+          }
+        },
+        {
+          "id": "T24",
+          "name": "Table 24",
+          "assignedUser": null,
+          "position": {
+            "x": 36.239495798319325,
+            "y": 93.49764248420591
+          }
+        }
+      ],
+      "position": {
+        "x": 23,
+        "y": 34.96655932623235
+      }
+    },
+    {
+      "id": "zone-1768997682896",
+      "name": "Zone 3",
+      "floorPlanImage": "aarhus-zone-3.svg",
+      "tables": [
+        {
+          "id": "T1",
+          "name": "Table 1",
+          "assignedUser": null,
+          "position": {
+            "x": 7.03781512605042,
+            "y": 6.985512998610835
+          }
+        },
+        {
+          "id": "T2",
+          "name": "Table 2",
+          "assignedUser": null,
+          "position": {
+            "x": 30.987394957983195,
+            "y": 6.91495226125113
+          }
+        },
+        {
+          "id": "T3",
+          "name": "Table 3",
+          "assignedUser": null,
+          "position": {
+            "x": 7.03781512605042,
+            "y": 25.542986924213356
+          }
+        },
+        {
+          "id": "T4",
+          "name": "Table 4",
+          "assignedUser": null,
+          "position": {
+            "x": 30.252100840336134,
+            "y": 25.542986924213356
+          }
+        },
+        {
+          "id": "T5",
+          "name": "Table 5",
+          "assignedUser": null,
+          "position": {
+            "x": 6.302521008403361,
+            "y": 18.486913188242816
+          }
+        },
+        {
+          "id": "T6",
+          "name": "Table 6",
+          "assignedUser": null,
+          "position": {
+            "x": 31.512605042016805,
+            "y": 17.99298802672488
+          }
+        },
+        {
+          "id": "T7",
+          "name": "Table 7",
+          "assignedUser": null,
+          "position": {
+            "x": 30.672268907563026,
+            "y": 39.23176997199621
+          }
+        },
+        {
+          "id": "T8",
+          "name": "Table 8",
+          "assignedUser": null,
+          "position": {
+            "x": 8.823529411764707,
+            "y": 38.102798174240924
+          }
+        },
+        {
+          "id": "T9",
+          "name": "Table 9",
+          "assignedUser": null,
+          "position": {
+            "x": 33.92857142857143,
+            "y": 47.91074066723997
+          }
+        },
+        {
+          "id": "T10",
+          "name": "Table 10",
+          "assignedUser": null,
+          "position": {
+            "x": 8.403361344537815,
+            "y": 46.07616149588763
+          }
+        },
+        {
+          "id": "T11",
+          "name": "Table 11",
+          "assignedUser": null,
+          "position": {
+            "x": 9.34873949579832,
+            "y": 58.565412008555484
+          }
+        },
+        {
+          "id": "T12",
+          "name": "Table 12",
+          "assignedUser": null,
+          "position": {
+            "x": 33.61344537815126,
+            "y": 58.071486847037555
+          }
+        },
+        {
+          "id": "T13",
+          "name": "Table 13",
+          "assignedUser": null,
+          "position": {
+            "x": 90.96638655462185,
+            "y": 44.73550748605323
+          }
+        },
+        {
+          "id": "T14",
+          "name": "Table 14",
+          "assignedUser": null,
+          "position": {
+            "x": 94.11764705882352,
+            "y": 29.49438821635686
+          }
+        },
+        {
+          "id": "T15",
+          "name": "Table 15",
+          "assignedUser": null,
+          "position": {
+            "x": 67.64705882352942,
+            "y": 28.859341580119512
+          }
+        },
+        {
+          "id": "T16",
+          "name": "Table 16",
+          "assignedUser": null,
+          "position": {
+            "x": 92.12184873949579,
+            "y": 10.93691429075434
+          }
+        },
+        {
+          "id": "T17",
+          "name": "Table 17",
+          "assignedUser": null,
+          "position": {
+            "x": 69.22268907563026,
+            "y": 10.372428391876696
+          }
+        },
+        {
+          "id": "T18",
+          "name": "Table 18",
+          "assignedUser": null,
+          "position": {
+            "x": 93.69747899159664,
+            "y": 40.78410619390972
+          }
+        },
+        {
+          "id": "T19",
+          "name": "Table 19",
+          "assignedUser": null,
+          "position": {
+            "x": 66.07142857142857,
+            "y": 40.21962029503208
+          }
+        }
+      ],
+      "position": {
+        "x": 84.41666666666666,
+        "y": 97.70126331434234
+      }
     }
   ]
 }
