@@ -321,6 +321,7 @@ export const LocationPage: React.FC = () => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>×</button>
+            <span className="modal-table-id">{selectedTable.id}</span>
             <h2>{selectedTable.name}</h2>
             <div className={`modal-status ${selectedTable.isAvailable ? 'available' : 'occupied'}`}>
               {selectedTable.isAvailable ? '✓ Available' : '✗ Occupied'}

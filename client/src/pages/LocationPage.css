@@ -604,6 +604,18 @@
   color: var(--accent-red);
 }
 
+.modal-table-id {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+  color: #00f5ff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
 .modal-content h2 {
   margin: 0 0 20px 0;
   color: var(--text-primary);

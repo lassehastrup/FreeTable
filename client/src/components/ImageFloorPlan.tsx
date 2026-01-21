@@ -54,6 +54,7 @@ export const ImageFloorPlan: React.FC<ImageFloorPlanProps> = ({
                   {table.isAvailable ? 'Available' : table.status}
                 </span>
               </div>
+              <div className="tooltip-name">{table.name}</div>
               {table.assignedUser && (
                 <div className="tooltip-user">
                   👤 {table.assignedUser.split('@')[0]}
