@@ -13,6 +13,7 @@
           "id": "T1",
           "name": "Table 1",
           "assignedUser": "mads.kildegaard@fellowmind.dk",
+          "assignedUserName": "Mads Kildegaard",
           "position": {
             "x": 8.403361344537815,
             "y": 30.203066022815932
@@ -22,6 +23,7 @@
           "id": "T2",
           "name": "Table 2",
           "assignedUser": "anna.tagesen@fellowmind.dk",
+          "assignedUserName": "Anna Tagesen",
           "position": {
             "x": 21.079880705167298,
             "y": 30.395524696499514
@@ -31,6 +33,7 @@
           "id": "T3",
           "name": "Table 3",
           "assignedUser": "jon.eriksen@fellowmind.dk",
+          "assignedUserName": "Jon Eriksen",
           "position": {
             "x": 35.50420168067227,
             "y": 30.203066022815932
@@ -40,6 +43,7 @@
           "id": "T4",
           "name": "Table 4",
           "assignedUser": "rasmus.glad@fellowmind.dk",
+          "assignedUserName": "Rasmus Glad",
           "position": {
             "x": 8.875739244280968,
             "y": 41.586864210968436
@@ -49,6 +53,7 @@
           "id": "T5",
           "name": "Table 5",
           "assignedUser": "niels.vestergaard@fellowmind.dk",
+          "assignedUserName": "Niels Vestergaard",
           "position": {
             "x": 21.74556114848837,
             "y": 41.758160223945
@@ -58,6 +63,7 @@
           "id": "T6",
           "name": "Table 6",
           "assignedUser": "bent.abildskov.nielsen@fellowmind.dk",
+          "assignedUserName": "Bent Abildskov Nielsen",
           "position": {
             "x": 36.72337112321251,
             "y": 41.70106155295281
@@ -67,6 +73,7 @@
           "id": "T7",
           "name": "Table 7",
           "assignedUser": "henrik.aeroe@fellowmind.dk",
+          "assignedUserName": "Henrik Ærøe",
           "position": {
             "x": 9.09763272538799,
             "y": 49.523579478882624
@@ -76,6 +83,7 @@
           "id": "T8",
           "name": "Table 8",
           "assignedUser": "brian.hoegsberg@fellowmind.dk",
+          "assignedUserName": "Brian Høgsberg",
           "position": {
             "x": 22.411241591809443,
             "y": 49.18098745292949
@@ -85,6 +93,7 @@
           "id": "T9",
           "name": "Table 9",
           "assignedUser": "trine.morsing@fellowmind.dk",
+          "assignedUserName": "Trine Morsing",
           "position": {
             "x": 37.05621134487304,
             "y": 49.066790110945114
@@ -94,6 +103,7 @@
           "id": "T10",
           "name": "Table 10",
           "assignedUser": "sonja.haslund@fellowmind.dk",
+          "assignedUserName": "Sonja Haslund",
           "position": {
             "x": 8.653845763173944,
             "y": 59.972636270453094
@@ -103,6 +113,7 @@
           "id": "T11",
           "name": "Table 11",
           "assignedUser": "emma.spatzek@fellowmind.dk",
+          "assignedUserName": "Emma Spatzek",
           "position": {
             "x": 22.965975294577003,
             "y": 59.63004424449997
@@ -112,6 +123,7 @@
           "id": "T12",
           "name": "Table 12",
           "assignedUser": "anita.maria.emdal@fellowmind.dk",
+          "assignedUserName": "Anita Maria Emdal",
           "position": {
             "x": 38.498518972068695,
             "y": 59.63004424449997
@@ -121,6 +133,7 @@
           "id": "T13",
           "name": "Table 13",
           "assignedUser": "lars.hammer@fellowmind.dk",
+          "assignedUserName": "Lars Hammer",
           "position": {
             "x": 8.542899022620432,
             "y": 67.90935284525214
@@ -130,6 +143,7 @@
           "id": "T14",
           "name": "Table 14",
           "assignedUser": "morten.jakobsen@fellowmind.dk",
+          "assignedUserName": "Morten Jakobsen",
           "position": {
             "x": 22.965975294577003,
             "y": 67.73805683227559
@@ -139,6 +153,7 @@
           "id": "T15",
           "name": "Table 15",
           "assignedUser": "hans.jorgensen@fellowmind.dk",
+          "assignedUserName": "Hans Jørgensen",
           "position": {
             "x": 37.94378526930114,
             "y": 67.62385949029121
@@ -148,6 +163,7 @@
           "id": "T16",
           "name": "Table 16",
           "assignedUser": "bjarke.fogh@fellowmind.dk",
+          "assignedUserName": "Bjarke Fogh",
           "position": {
             "x": 8.653845763173944,
             "y": 77.78742292690075
@@ -157,6 +173,7 @@
           "id": "T17",
           "name": "Table 17",
           "assignedUser": "michael.askjaer@fellowmind.dk",
+          "assignedUserName": "Michael Askjær",
           "position": {
             "x": 23.40976225679105,
             "y": 77.73032425590854
@@ -175,6 +192,7 @@
           "id": "T19",
           "name": "Table 19",
           "assignedUser": "andreas.moller@fellowmind.dk",
+          "assignedUserName": "Andreas Møller",
           "position": {
             "x": 8.321005541513408,
             "y": 83.49729002611957
@@ -184,6 +202,7 @@
           "id": "T20",
           "name": "Table 20",
           "assignedUser": "jesper.boegholm@fellowmind.dk",
+          "assignedUserName": "Jesper Bøgholm",
           "position": {
             "x": 23.63165573789808,
             "y": 83.38309268413519
@@ -193,6 +212,7 @@
           "id": "T21",
           "name": "Table 21",
           "assignedUser": "andreas.mouritsen@fellowmind.dk",
+          "assignedUserName": "Andreas Mouritsen",
           "position": {
             "x": 38.720412453175726,
             "y": 83.21179667115864
@@ -202,6 +222,7 @@
           "id": "T22",
           "name": "Table 22",
           "assignedUser": "lasse.hastrup@fellowmind.dk",
+          "assignedUserName": "Lasse Hastrup",
           "position": {
             "x": 8.321005541513408,
             "y": 93.7179521337213
@@ -211,6 +232,7 @@
           "id": "T23",
           "name": "Table 23",
           "assignedUser": "stephan.fuhlendorff@fellowmind.dk",
+          "assignedUserName": "Stephan Fuhlendorff",
           "position": {
             "x": 23.520708997344563,
             "y": 93.43245877876035
@@ -220,6 +242,7 @@
           "id": "T24",
           "name": "Table 24",
           "assignedUser": "lasse.krogsgaard@fellowmind.dk",
+          "assignedUserName": "Lasse Krogsgaard",
           "position": {
             "x": 38.387572231515186,
             "y": 93.37536010776817
@@ -229,6 +252,7 @@
           "id": "T25",
           "name": "Table 25",
           "assignedUser": "patrick.thusing@fellowmind.dk",
+          "assignedUserName": "Patrick Thüsing",
           "position": {
             "x": 68.67603240262399,
             "y": 83.55438869711176
@@ -238,6 +262,7 @@
           "id": "T26",
           "name": "Table 26",
           "assignedUser": "rasmus.eriksen@fellowmind.dk",
+          "assignedUserName": "Rasmus Eriksen",
           "position": {
             "x": 87.31508481561401,
             "y": 83.4401913551274
@@ -247,6 +272,7 @@
           "id": "T27",
           "name": "Table 27",
           "assignedUser": "franz.skaaning@fellowmind.dk",
+          "assignedUserName": "Franz Skaaning",
           "position": {
             "x": 68.01035195930292,
             "y": 93.54665612074473
@@ -256,6 +282,7 @@
           "id": "T28",
           "name": "Table 28",
           "assignedUser": "kim.jonassen@fellowmind.dk",
+          "assignedUserName": "Kim Jonassen",
           "position": {
             "x": 87.86981851838158,
             "y": 93.2611627657838
