@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchLocation } from '../services/api';
+import { fetchLocation, getFloorPlanUrl } from '../services/api';
 import { Location, Table } from '../types';
 import { FloorPlanView } from '../components/FloorPlanView';
 import { ImageFloorPlan } from '../components/ImageFloorPlan';
@@ -71,10 +71,8 @@ export const LocationPage: React.FC = () => {
   const availableCount = location.tables.filter(t => t.isAvailable).length;
   
   // Determine if we have an image-based floor plan
-  const hasImageFloorPlan = location.floorPlanImage || location.floorPlan?.imageUrl;
-  const floorPlanImageUrl = location.floorPlanImage 
-    ? `/floorplans/${location.id}/${location.floorPlanImage}`
-    : location.floorPlan?.imageUrl;
+  const hasImageFloorPlan = !!location.floorPlanImage;
+  const floorPlanImageUrl = hasImageFloorPlan ? getFloorPlanUrl(location) : null;
 
   return (
     <div className="location-page">
