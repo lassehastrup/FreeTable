@@ -13,171 +13,205 @@
           "id": "T1",
           "name": "Table 1",
           "assignedUser": "mads.kildegaard@fellowmind.dk",
-          "assignedUserName": "Mads Kildegaard",
           "position": {
             "x": 8.403361344537815,
             "y": 30.203066022815932
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T2",
           "name": "Table 2",
           "assignedUser": "anna.tagesen@fellowmind.dk",
-          "assignedUserName": "Anna Tagesen",
           "position": {
             "x": 21.079880705167298,
             "y": 30.395524696499514
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: VIP - Konfigurationsafklaringer - SFTP Backup Data og Tredjeparts AI-løsning"
         },
         {
           "id": "T3",
           "name": "Table 3",
           "assignedUser": "jon.eriksen@fellowmind.dk",
-          "assignedUserName": "Jon Eriksen",
           "position": {
             "x": 35.50420168067227,
             "y": 30.203066022815932
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: VIP - Konfigurationsafklaringer - SFTP Backup Data og Tredjeparts AI-løsning"
         },
         {
           "id": "T4",
           "name": "Table 4",
           "assignedUser": "rasmus.glad@fellowmind.dk",
-          "assignedUserName": "Rasmus Glad",
           "position": {
             "x": 8.875739244280968,
             "y": 41.586864210968436
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T5",
           "name": "Table 5",
           "assignedUser": "niels.vestergaard@fellowmind.dk",
-          "assignedUserName": "Niels Vestergaard",
           "position": {
             "x": 21.74556114848837,
             "y": 41.758160223945
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: VIP - Konfigurationsafklaringer - SFTP Backup Data og Tredjeparts AI-løsning"
         },
         {
           "id": "T6",
           "name": "Table 6",
           "assignedUser": "bent.abildskov.nielsen@fellowmind.dk",
-          "assignedUserName": "Bent Abildskov Nielsen",
           "position": {
             "x": 36.72337112321251,
             "y": 41.70106155295281
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T7",
           "name": "Table 7",
           "assignedUser": "henrik.aeroe@fellowmind.dk",
-          "assignedUserName": "Henrik Ærøe",
           "position": {
             "x": 9.09763272538799,
             "y": 49.523579478882624
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T8",
           "name": "Table 8",
           "assignedUser": "brian.hoegsberg@fellowmind.dk",
-          "assignedUserName": "Brian Høgsberg",
           "position": {
             "x": 22.411241591809443,
             "y": 49.18098745292949
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: Trine fri- Sander på sygehuset "
         },
         {
           "id": "T9",
           "name": "Table 9",
           "assignedUser": "trine.morsing@fellowmind.dk",
-          "assignedUserName": "Trine Morsing",
           "position": {
             "x": 37.05621134487304,
             "y": 49.066790110945114
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: Trine fri- Sander på sygehuset "
         },
         {
           "id": "T10",
           "name": "Table 10",
           "assignedUser": "sonja.haslund@fellowmind.dk",
-          "assignedUserName": "Sonja Haslund",
           "position": {
             "x": 8.653845763173944,
             "y": 59.972636270453094
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: Trine fri- Sander på sygehuset "
         },
         {
           "id": "T11",
           "name": "Table 11",
           "assignedUser": "emma.spatzek@fellowmind.dk",
-          "assignedUserName": "Emma Spatzek",
           "position": {
             "x": 22.965975294577003,
             "y": 59.63004424449997
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: Trine fri- Sander på sygehuset "
         },
         {
           "id": "T12",
           "name": "Table 12",
           "assignedUser": "anita.maria.emdal@fellowmind.dk",
-          "assignedUserName": "Anita Maria Emdal",
           "position": {
             "x": 38.498518972068695,
             "y": 59.63004424449997
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T13",
           "name": "Table 13",
           "assignedUser": "lars.hammer@fellowmind.dk",
-          "assignedUserName": "Lars Hammer",
           "position": {
             "x": 8.542899022620432,
             "y": 67.90935284525214
-          }
+          },
+          "status": "workingElsewhere",
+          "isAvailable": true,
+          "reason": "All-day absence: Work from Odense"
         },
         {
           "id": "T14",
           "name": "Table 14",
           "assignedUser": "morten.jakobsen@fellowmind.dk",
-          "assignedUserName": "Morten Jakobsen",
           "position": {
             "x": 22.965975294577003,
             "y": 67.73805683227559
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T15",
           "name": "Table 15",
           "assignedUser": "hans.jorgensen@fellowmind.dk",
-          "assignedUserName": "Hans Jørgensen",
           "position": {
             "x": 37.94378526930114,
             "y": 67.62385949029121
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T16",
           "name": "Table 16",
           "assignedUser": "bjarke.fogh@fellowmind.dk",
-          "assignedUserName": "Bjarke Fogh",
           "position": {
             "x": 8.653845763173944,
             "y": 77.78742292690075
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T17",
           "name": "Table 17",
           "assignedUser": "michael.askjaer@fellowmind.dk",
-          "assignedUserName": "Michael Askjær",
           "position": {
             "x": 23.40976225679105,
             "y": 77.73032425590854
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: CIS - Security Standup - Weekly"
         },
         {
           "id": "T18",
@@ -186,107 +220,130 @@
           "position": {
             "x": 38.60946571262221,
             "y": 77.73032425590854
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T19",
           "name": "Table 19",
           "assignedUser": "andreas.moller@fellowmind.dk",
-          "assignedUserName": "Andreas Møller",
           "position": {
             "x": 8.321005541513408,
             "y": 83.49729002611957
-          }
+          },
+          "status": "workingElsewhere",
+          "isAvailable": true,
+          "reason": "All-day absence: Ringsted Kommune"
         },
         {
           "id": "T20",
           "name": "Table 20",
           "assignedUser": "jesper.boegholm@fellowmind.dk",
-          "assignedUserName": "Jesper Bøgholm",
           "position": {
             "x": 23.63165573789808,
             "y": 83.38309268413519
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T21",
           "name": "Table 21",
           "assignedUser": "andreas.mouritsen@fellowmind.dk",
-          "assignedUserName": "Andreas Mouritsen",
           "position": {
             "x": 38.720412453175726,
             "y": 83.21179667115864
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: CIS - Security Standup - Weekly"
         },
         {
           "id": "T22",
           "name": "Table 22",
           "assignedUser": "lasse.hastrup@fellowmind.dk",
-          "assignedUserName": "Lasse Hastrup",
           "position": {
             "x": 8.321005541513408,
             "y": 93.7179521337213
-          }
+          },
+          "status": "workingElsewhere",
+          "isAvailable": true,
+          "reason": "All-day absence: Arbejder hjemme"
         },
         {
           "id": "T23",
           "name": "Table 23",
           "assignedUser": "stephan.fuhlendorff@fellowmind.dk",
-          "assignedUserName": "Stephan Fuhlendorff",
           "position": {
             "x": 23.520708997344563,
             "y": 93.43245877876035
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "Busy: MAS - Operations ledermøde"
         },
         {
           "id": "T24",
           "name": "Table 24",
           "assignedUser": "lasse.krogsgaard@fellowmind.dk",
-          "assignedUserName": "Lasse Krogsgaard",
           "position": {
             "x": 38.387572231515186,
             "y": 93.37536010776817
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T25",
           "name": "Table 25",
           "assignedUser": "patrick.thusing@fellowmind.dk",
-          "assignedUserName": "Patrick Thüsing",
           "position": {
             "x": 68.67603240262399,
             "y": 83.55438869711176
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T26",
           "name": "Table 26",
           "assignedUser": "rasmus.eriksen@fellowmind.dk",
-          "assignedUserName": "Rasmus Eriksen",
           "position": {
             "x": 87.31508481561401,
             "y": 83.4401913551274
-          }
+          },
+          "status": "busy",
+          "isAvailable": false,
+          "reason": "In online meeting: Copilot 2026 planlægning"
         },
         {
           "id": "T27",
           "name": "Table 27",
           "assignedUser": "franz.skaaning@fellowmind.dk",
-          "assignedUserName": "Franz Skaaning",
           "position": {
             "x": 68.01035195930292,
             "y": 93.54665612074473
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         },
         {
           "id": "T28",
           "name": "Table 28",
           "assignedUser": "kim.jonassen@fellowmind.dk",
-          "assignedUserName": "Kim Jonassen",
           "position": {
             "x": 87.86981851838158,
             "y": 93.2611627657838
-          }
+          },
+          "status": "atDesk",
+          "isAvailable": false,
+          "reason": "At desk"
         }
       ],
       "position": {
@@ -306,7 +363,10 @@
           "position": {
             "x": 8.245798319327731,
             "y": 28.277499340543393
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T2",
@@ -315,7 +375,10 @@
           "position": {
             "x": 29.25420168067227,
             "y": 29.33262991295173
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T3",
@@ -324,7 +387,10 @@
           "position": {
             "x": 8.771008403361344,
             "y": 76.81350567132684
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T4",
@@ -333,7 +399,10 @@
           "position": {
             "x": 29.67436974789916,
             "y": 75.54734898443682
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T5",
@@ -342,7 +411,10 @@
           "position": {
             "x": 68.11974789915966,
             "y": 30.59878659984173
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T6",
@@ -351,7 +423,10 @@
           "position": {
             "x": 88.07773109243698,
             "y": 29.754682141915062
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T7",
@@ -360,7 +435,10 @@
           "position": {
             "x": 88.49789915966386,
             "y": 73.85914006858349
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T8",
@@ -369,7 +447,10 @@
           "position": {
             "x": 66.75420168067227,
             "y": 70.06067000791349
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         }
       ],
       "position": {
@@ -389,7 +470,10 @@
           "position": {
             "x": 7.03781512605042,
             "y": 6.985512998610835
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T2",
@@ -398,7 +482,10 @@
           "position": {
             "x": 30.987394957983195,
             "y": 6.91495226125113
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T3",
@@ -407,7 +494,10 @@
           "position": {
             "x": 7.03781512605042,
             "y": 25.542986924213356
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T4",
@@ -416,7 +506,10 @@
           "position": {
             "x": 30.252100840336134,
             "y": 25.542986924213356
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T5",
@@ -425,7 +518,10 @@
           "position": {
             "x": 6.302521008403361,
             "y": 18.486913188242816
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T6",
@@ -434,7 +530,10 @@
           "position": {
             "x": 31.512605042016805,
             "y": 17.99298802672488
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T7",
@@ -443,7 +542,10 @@
           "position": {
             "x": 30.672268907563026,
             "y": 39.23176997199621
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T8",
@@ -452,7 +554,10 @@
           "position": {
             "x": 8.823529411764707,
             "y": 38.102798174240924
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T9",
@@ -461,7 +566,10 @@
           "position": {
             "x": 33.92857142857143,
             "y": 47.91074066723997
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T10",
@@ -470,7 +578,10 @@
           "position": {
             "x": 8.403361344537815,
             "y": 46.07616149588763
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T11",
@@ -479,7 +590,10 @@
           "position": {
             "x": 9.34873949579832,
             "y": 58.565412008555484
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T12",
@@ -488,7 +602,10 @@
           "position": {
             "x": 33.61344537815126,
             "y": 58.071486847037555
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T13",
@@ -497,7 +614,10 @@
           "position": {
             "x": 90.96638655462185,
             "y": 44.73550748605323
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T14",
@@ -506,7 +626,10 @@
           "position": {
             "x": 94.11764705882352,
             "y": 29.49438821635686
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T15",
@@ -515,7 +638,10 @@
           "position": {
             "x": 67.64705882352942,
             "y": 28.859341580119512
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T16",
@@ -524,7 +650,10 @@
           "position": {
             "x": 92.12184873949579,
             "y": 10.93691429075434
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T17",
@@ -533,7 +662,10 @@
           "position": {
             "x": 69.22268907563026,
             "y": 10.372428391876696
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T18",
@@ -542,7 +674,10 @@
           "position": {
             "x": 93.69747899159664,
             "y": 40.78410619390972
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         },
         {
           "id": "T19",
@@ -551,7 +686,10 @@
           "position": {
             "x": 66.07142857142857,
             "y": 40.21962029503208
-          }
+          },
+          "status": "available",
+          "isAvailable": true,
+          "reason": "Unassigned table"
         }
       ],
       "position": {

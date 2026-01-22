@@ -20,7 +20,6 @@ function Get-LocationConfig {
         if (-not (Test-Path $ConfigPath)) {
             throw "Configuration not found: $ConfigPath"
         }
-
         Get-Content $ConfigPath -Raw | ConvertFrom-Json
     }
 }

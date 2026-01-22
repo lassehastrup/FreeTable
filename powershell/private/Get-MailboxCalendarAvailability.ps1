@@ -1,23 +1,24 @@
 function Get-MailboxCalendarAvailability {
     <#
     .SYNOPSIS
-        Gets calendar availability for one or more users using Microsoft Graph getSchedule API.
+        Gets calendar availability for one or more users using Microsoft Graph calendarView API.
 
     .DESCRIPTION
-        Uses POST /me/calendar/getSchedule to fetch free/busy information for specified users.
+        Uses GET /users/{email}/calendar/calendarView to fetch calendar events for specified users.
         Returns availability status for the current day.
 
     .PARAMETER Emails
         Array of email addresses to check availability for.
 
-    .PARAMETER AccessToken
-        Bearer token for Microsoft Graph API authentication.
+    .PARAMETER Headers
+        Hashtable containing Authorization and Content-Type headers for Microsoft Graph API.
 
     .PARAMETER TimeZone
         The timezone for the schedule. Defaults to "Europe/Copenhagen".
 
     .EXAMPLE
-        Get-MailboxCalendarAvailability -Emails "user@contoso.com" -AccessToken $token
+        $headers = Get-MGGraphHeaders
+        Get-MailboxCalendarAvailability -Emails "user@contoso.com" -Headers $headers
     #>
     [CmdletBinding()]
     param (
@@ -26,8 +27,8 @@ function Get-MailboxCalendarAvailability {
         $Emails,
 
         [Parameter(Mandatory = $true)]
-        [string]
-        $AccessToken,
+        [hashtable]
+        $Headers,
 
         [Parameter()]
         [string]
@@ -36,38 +37,33 @@ function Get-MailboxCalendarAvailability {
 
     process {
         $today = Get-Date
-        $startOfDay = $today.Date.ToString("yyyy-MM-ddT00:00:00")
-        $endOfDay = $today.Date.ToString("yyyy-MM-ddT23:59:59")
+        $startDateTime = $today.Date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        $endDateTime = $today.Date.AddDays(1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
-        $body = @{
-            Schedules                = $Emails[0]
-            StartTime                = @{
-                dateTime = $startOfDay
-                timeZone = $TimeZone
+        $results = @()
+
+        foreach ($email in $Emails) {
+            try {
+                Write-Information "  Fetching calendar for $email..."
+
+                $uri = "https://graph.microsoft.com/v1.0/users/$email/calendar/calendarView?startDateTime=$startDateTime&endDateTime=$endDateTime"
+                $response = Invoke-RestMethod -Uri $uri -Headers $Headers -Method GET
+
+                $results += [PSCustomObject]@{
+                    scheduleId    = $email
+                    calendarEvents = $response.value
+                }
             }
-            EndTime                  = @{
-                dateTime = $endOfDay
-                timeZone = $TimeZone
+            catch {
+                Write-Warning "Failed to get calendar for $email : $_"
+                $results += [PSCustomObject]@{
+                    scheduleId    = $email
+                    calendarEvents = @()
+                    error         = $_.Exception.Message
+                }
             }
-            availabilityViewInterval = 60
-        } | ConvertTo-Json -Depth 5
-
-        $headers = @{
-            "Authorization" = "Bearer $AccessToken"
-            "Content-Type"  = "application/json"
         }
 
-        try {
-            $response = Invoke-RestMethod -Method POST `
-                -Uri "https://graph.microsoft.com/v1.0/me/calendar/getSchedule" `
-                -Headers $headers `
-                -Body $body
-
-            return $response.value
-        }
-        catch {
-            Write-Error "Failed to get schedule: $_"
-            return $null
-        }
+        return $results
     }
 }
